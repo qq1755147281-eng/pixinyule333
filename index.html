@@ -1,1660 +1,592 @@
-﻿<html lang="zh-CN"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>派信娱乐 - Pi Network社交应用</title>
-  <!-- Tailwind CSS v3 -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- 统一的 Tailwind 配置 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#07C160', // 微信绿
-            secondary: '#1A0B2E', // 黑紫色背景
-            textDark: '#FFFFFF', // 主文本（白色，适合深色背景）
-            textLight: '#B0B0B0', // 次要文本（浅灰色，适合深色背景）
-            borderColor: '#3A2A50', // 边框颜色（深紫色）
-          },
-          fontFamily: {
-            sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-          },
-          boxShadow: {
-            'top': '0 -1px 10px rgba(0, 0, 0, 0.1)',
-            'bottom': '0 1px 10px rgba(0, 0, 0, 0.1)',
-          }
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>派信娱乐 - 引领游戏潮流</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      }
-    }
-  </script>
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto {
-        content-visibility: auto;
-      }
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-      }
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      .message-bubble-left {
-        @apply bg-gray-800 rounded-t-lg rounded-tr-lg rounded-bl-lg;
-      }
-      .message-bubble-right {
-        @apply bg-primary text-white rounded-t-lg rounded-tl-lg rounded-br-lg;
-      }
-      .tab-active {
-        @apply text-primary border-b-2 border-primary;
-      }
-      .contact-index {
-        @apply fixed right-2 top-1/2 transform -translate-y-1/2 z-10 bg-transparent;
-      }
-      .contact-index-item {
-        @apply block w-6 h-6 text-xs text-primary text-center leading-6;
-      }
-      .province-btn {
-        @apply px-2 py-1 text-xs bg-purple-800 text-white rounded-full mr-2 mb-2 inline-block transition-all duration-300 hover:scale-105;
-      }
-      .province-btn:hover {
-        @apply bg-purple-700 shadow-lg;
-      }
-      .card-hover {
-        @apply transition-all duration-300 hover:shadow-lg hover:scale-[1.02];
-      }
-      .glass-effect {
-        @apply bg-opacity-20 backdrop-blur-lg backdrop-filter border border-white/10;
-      }
-      .gradient-text {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400;
-      }
-      .btn-primary {
-        @apply bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-lg hover:scale-105;
-      }
-      .btn-secondary {
-        @apply bg-purple-800/50 text-white px-4 py-2 rounded-full transition-all duration-300 hover:bg-purple-700/70;
-      }
-      .level-badge {
-        @apply inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500 text-black text-xs font-bold;
-      }
-      .achievement-card {
-        @apply bg-gradient-to-br from-gray-800 to-purple-900 rounded-lg p-4 border border-purple-500/30 shadow-lg;
-      }
-      .progress-bar {
-        @apply h-2 bg-gray-700 rounded-full overflow-hidden;
-      }
-      .progress-fill {
-        @apply h-full bg-gradient-to-r from-blue-500 to-purple-500;
-      }
-    }
-  </style>
+
+        body {
+            font-family: 'Kaiti', 'STKaiti', 'KaiTi', '楷体', sans-serif;
+            background-color: #000;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        /* 隐藏默认滚动条 */
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+
+        /* 流星背景 */
+        #meteor-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* 圆圈层 */
+        #circles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15), transparent 70%);
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.2),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+            }
+        }
+
+        /* 内容容器 */
+        .content-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 1vh 0 20vh;
+            gap: 1.5vh;
+        }
+
+        /* 标题样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 0.5vh;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+            color: #aaa;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* 图片和按钮区域 */
+        .images-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 450px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .image-button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+        }
+
+        .square-image {
+            width: 50%;
+            aspect-ratio: 1;
+            background-color: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .square-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .square-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 响应式设计 - 移动端优化 */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 1vh 0 3vh;
+                gap: 1.5vh;
+            }
+            
+            .main-title {
+                font-size: clamp(2rem, 12vw, 4rem);
+            }
+            
+            .subtitle {
+                font-size: clamp(0.8rem, 3vw, 1.1rem);
+                margin-top: 0.3rem;
+            }
+            
+            .images-section {
+                gap: 1rem;
+                max-width: 350px;
+            }
+            
+            .image-button-group {
+                gap: 0.6rem;
+            }
+            
+            .square-image {
+                width: 45%;
+            }
+            
+            .action-button {
+                padding: 0.4rem 1rem;
+                font-size: 0.75rem;
+                max-width: 140px;
+            }
+        }
+        
+        /* 按钮样式 */
+        .action-button {
+            padding: 0.5rem 1.2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 160px;
+            backdrop-filter: blur(10px);
+        }
+
+        .action-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        /* 自定义滚动条样式 */
+        .custom-scrollbar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 200px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .scroll-arrow {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 215, 0, 0.8);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .scroll-arrow:hover {
+            background-color: rgba(255, 215, 0, 1);
+            transform: scale(1.1);
+        }
+
+        .scroll-thumb {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 215, 0, 0.9);
+            border-radius: 50%;
+            cursor: grab;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .scroll-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .custom-scrollbar {
+                right: 10px;
+                width: 30px;
+                height: 150px;
+            }
+            
+            .scroll-arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+            
+            .scroll-thumb {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
 </head>
-<body class="font-sans text-textDark overflow-hidden h-screen flex flex-col bg-gradient-to-br from-black to-purple-900">
-  <!-- 顶部导航栏 -->
-  <header class="bg-secondary shadow-bottom z-10">
-    <div class="flex items-center justify-between px-4 h-12">
-      <h1 id="page-title" class="text-lg font-medium">全球派友社群</h1>
-      <div class="flex items-center space-x-4">
-        <button id="checkin-btn" class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-400 transition-colors hidden">
-          <i class="fa fa-calendar-check-o mr-1"></i> 签到
-        </button>
-        <div class="relative">
-          <button id="login-btn" class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-400 transition-colors">
-            派币授权登录
-          </button>
-          <div id="logout-menu" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 rounded-md shadow-lg z-20">
-            <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-textDark hover:bg-purple-800">
-              退出登录
-            </button>
-          </div>
-        </div>
-        <button id="more-btn" class="text-textDark">
-          <i class="fa fa-ellipsis-v text-lg"></i>
-        </button>
-      </div>
+<body>
+    <!-- 音效元素 -->
+    <audio id="click-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 流星背景 -->
+    <canvas id="meteor-background"></canvas>
+
+    <!-- 圆圈层 -->
+    <div id="circles-container">
+        <div class="circle" style="width: 300px; height: 300px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="circle" style="width: 200px; height: 200px; top: 50%; right: 15%; animation-delay: -5s;"></div>
+        <div class="circle" style="width: 250px; height: 250px; bottom: 20%; left: 20%; animation-delay: -10s;"></div>
     </div>
-  </header>
 
-  <!-- 主内容区域 -->
-  <main class="flex-1 overflow-hidden relative">
-    <!-- 聊天页面 -->
-    <section id="chat-page" class="h-full flex flex-col md:flex-row">
-      <!-- 消息列表 -->
-      <div class="w-full md:w-1/3 h-full md:h-auto border-r border-borderColor flex flex-col">
-        <!-- 顶部图片区域 -->
-        <div class="w-full h-32 bg-gray-800 relative overflow-hidden">
-          <div id="banner-placeholder" class="w-full h-full flex items-center justify-center bg-gradient-to-r from-purple-800 to-blue-800">
-            <div class="text-center">
-              <i class="fa fa-image text-3xl text-white/50 mb-2"></i>
-              <p class="text-white/70 text-sm">后期将上传图片</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 搜索框 -->
-        <div class="p-3 bg-secondary">
-          <div class="flex items-center bg-secondary rounded-full px-4 py-2">
-            <i class="fa fa-search text-textLight mr-2"></i>
-            <input type="text" placeholder="搜索" class="bg-transparent w-full focus:outline-none text-sm">
-          </div>
-        </div>
-        
-        <!-- 公告流动栏 -->
-        <div class="bg-black text-white p-2 border-b border-borderColor overflow-hidden relative">
-          <div class="flex items-center">
-            <span class="mr-2 text-yellow-400 font-bold">公告:</span>
-            <div class="marquee-container whitespace-nowrap">
-              <div class="marquee-content">🎉 派信娱乐正式上线！欢迎各位派友加入我们的大家庭！🎮 新游戏派币象棋和派币跑得快即将上线，敬请期待！💎 股东招募计划和推广大使计划现已启动，快来参与吧！</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 功能按钮区域 -->
-        <div class="p-3 flex justify-end">
-          <button id="add-group-btn" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all">
-            <i class="fa fa-plus text-xl"></i>
-          </button>
-        </div>
-        
-        <!-- 省份选择区域 -->
-        <div class="p-3 border-b border-borderColor overflow-x-auto scrollbar-hide" style="max-height: 90px;">
-          <div id="province-buttons" class="grid grid-cols-6 gap-2" style="width: max-content;">
-            <!-- 省份按钮将通过JavaScript动态生成 -->
-          </div>
-        </div>
-        
-        <!-- 城市列表（默认隐藏） -->
-        <div id="city-list-container" class="hidden flex-1 overflow-y-auto scrollbar-hide">
-          <div class="p-3 border-b border-borderColor flex items-center">
-            <button id="back-to-provinces" class="mr-2">
-              <i class="fa fa-arrow-left"></i>
-            </button>
-            <h3 id="current-province" class="font-medium">北京</h3>
-          </div>
-          <div id="city-list" class="bg-transparent">
-            <!-- 城市项将通过JavaScript动态生成 -->
-          </div>
-        </div>
-        
-        <!-- 消息列表 -->
-        <div id="message-list-container" class="flex-1 overflow-y-auto scrollbar-hide">
-          <div id="message-list" class="bg-transparent">
-            <!-- 消息项将通过JavaScript动态生成 -->
-          </div>
-        </div>
-      </div>
-
-      <!-- 聊天窗口 -->
-      <div id="chat-window" class="hidden md:flex md:w-2/3 h-full flex-col bg-secondary">
-        <!-- 聊天头部 -->
-        <div class="bg-secondary p-3 flex items-center justify-between border-b border-borderColor">
-          <div class="flex items-center">
-            <button id="back-to-list" class="md:hidden mr-2">
-              <i class="fa fa-arrow-left"></i>
-            </button>
-            <h2 id="chat-name" class="font-medium">选择一个联系人开始聊天</h2>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button class="text-textDark">
-              <i class="fa fa-volume-up"></i>
-            </button>
-            <button class="text-textDark">
-              <i class="fa fa-search"></i>
-            </button>
-            <button class="text-textDark">
-              <i class="fa fa-ellipsis-v"></i>
-            </button>
-          </div>
-        </div>
-        
-        <!-- 聊天内容区域 -->
-        <div id="chat-content" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
-          <div class="text-center text-textLight text-sm">
-            选择一个联系人开始聊天
-          </div>
-        </div>
-        
-        <!-- 输入区域 -->
-        <div class="bg-secondary p-3 border-t border-borderColor">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center space-x-3">
-              <button class="text-textDark">
-                <i class="fa fa-smile-o text-xl"></i>
-              </button>
-              <button class="text-textDark">
-                <i class="fa fa-paperclip text-xl"></i>
-              </button>
-            </div>
-            <button class="text-textDark">
-              <i class="fa fa-microphone text-xl"></i>
-            </button>
-          </div>
-          <div class="flex items-center">
-            <input id="message-input" type="text" placeholder="输入消息..." class="flex-1 bg-secondary rounded-full px-4 py-2 focus:outline-none">
-            <button id="send-message" class="ml-2 text-primary font-medium">发送</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 联系人页面 - 成长系统 -->
-    <section id="contacts-page" class="hidden h-full flex flex-col">
-      <!-- 成长系统头部 -->
-      <div class="bg-secondary p-4">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold">成长系统</h2>
-          <div class="flex items-center">
-            <span class="text-yellow-400 mr-2">Lv.12</span>
-            <div class="level-badge">12</div>
-          </div>
-        </div>
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-textLight text-sm">距离下一级还需</p>
-            <div class="flex items-center">
-              <div class="progress-bar w-48 mr-2">
-                <div class="progress-fill" style="width: 65%"></div>
-              </div>
-              <span class="text-xs text-textLight">65%</span>
-            </div>
-          </div>
-          <button class="btn-primary text-sm">
-            <i class="fa fa-rocket mr-1"></i> 快速升级
-          </button>
-        </div>
-      </div>
-      
-      <!-- 成就展示 -->
-      <div class="p-4 bg-secondary mt-2">
-        <h3 class="text-lg font-medium mb-3">我的成就</h3>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="achievement-card card-hover">
-            <div class="flex items-center justify-between mb-2">
-              <h4 class="font-medium">社交达人</h4>
-              <span class="text-yellow-400 text-xs">已完成</span>
-            </div>
-            <p class="text-textLight text-xs mb-2">添加50个好友并保持活跃聊天</p>
-            <div class="flex items-center justify-between">
-              <div class="text-xs text-textLight">50/50</div>
-              <div class="progress-bar w-24">
-                <div class="progress-fill" style="width: 100%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="achievement-card card-hover">
-            <div class="flex items-center justify-between mb-2">
-              <h4 class="font-medium">游戏高手</h4>
-              <span class="text-textLight text-xs">进行中</span>
-            </div>
-            <p class="text-textLight text-xs mb-2">在3款不同游戏中达到10级</p>
-            <div class="flex items-center justify-between">
-              <div class="text-xs text-textLight">2/3</div>
-              <div class="progress-bar w-24">
-                <div class="progress-fill" style="width: 66%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="achievement-card card-hover">
-            <div class="flex items-center justify-between mb-2">
-              <h4 class="font-medium">派币收藏家</h4>
-              <span class="text-textLight text-xs">进行中</span>
-            </div>
-            <p class="text-textLight text-xs mb-2">累计获得10000派币</p>
-            <div class="flex items-center justify-between">
-              <div class="text-xs text-textLight">6500/10000</div>
-              <div class="progress-bar w-24">
-                <div class="progress-fill" style="width: 65%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="achievement-card card-hover">
-            <div class="flex items-center justify-between mb-2">
-              <h4 class="font-medium">社区贡献者</h4>
-              <span class="text-textLight text-xs">进行中</span>
-            </div>
-            <p class="text-textLight text-xs mb-2">发布50条有价值的社区内容</p>
-            <div class="flex items-center justify-between">
-              <div class="text-xs text-textLight">30/50</div>
-              <div class="progress-bar w-24">
-                <div class="progress-fill" style="width: 60%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 每日任务 -->
-      <div class="p-4 bg-secondary mt-2 flex-1 overflow-y-auto scrollbar-hide">
-        <h3 class="text-lg font-medium mb-3">每日任务</h3>
-        <div class="space-y-3">
-          <div class="bg-gray-800 rounded-lg p-3 flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
-                <i class="fa fa-comment text-blue-400"></i>
-              </div>
-              <div>
-                <h4 class="font-medium text-sm">发送10条消息</h4>
-                <p class="text-textLight text-xs">奖励: 50派币</p>
-              </div>
-            </div>
-            <button class="bg-green-500 text-white px-3 py-1 rounded-full text-xs">已完成</button>
-          </div>
-          <div class="bg-gray-800 rounded-lg p-3 flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
-                <i class="fa fa-gamepad text-purple-400"></i>
-              </div>
-              <div>
-                <h4 class="font-medium text-sm">玩1局游戏</h4>
-                <p class="text-textLight text-xs">奖励: 100派币</p>
-              </div>
-            </div>
-            <button class="bg-primary text-white px-3 py-1 rounded-full text-xs">去完成</button>
-          </div>
-          <div class="bg-gray-800 rounded-lg p-3 flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center mr-3">
-                <i class="fa fa-share-alt text-yellow-400"></i>
-              </div>
-              <div>
-                <h4 class="font-medium text-sm">分享给3位好友</h4>
-                <p class="text-textLight text-xs">奖励: 200派币</p>
-              </div>
-            </div>
-            <button class="bg-primary text-white px-3 py-1 rounded-full text-xs">去完成</button>
-          </div>
-          <div class="bg-gray-800 rounded-lg p-3 flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-3">
-                <i class="fa fa-clock-o text-red-400"></i>
-              </div>
-              <div>
-                <h4 class="font-medium text-sm">连续登录7天</h4>
-                <p class="text-textLight text-xs">奖励: 500派币</p>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="flex space-x-1 mr-2">
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                <div class="w-2 h-2 rounded-full bg-gray-600"></div>
-                <div class="w-2 h-2 rounded-full bg-gray-600"></div>
-                <div class="w-2 h-2 rounded-full bg-gray-600"></div>
-                <div class="w-2 h-2 rounded-full bg-gray-600"></div>
-              </div>
-              <span class="text-xs text-textLight">3/7</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 游戏页面 -->
-    <section id="games-page" class="hidden h-full flex flex-col">
-      <!-- 游戏头部 -->
-      <div class="bg-secondary p-3 border-b border-borderColor">
-        <div class="flex items-center justify-between">
-          <h2 class="font-medium">派币游戏开启</h2>
-          <div class="flex items-center space-x-3">
-            <button id="games-checkin-btn" class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium hover:bg-yellow-400 transition-colors">
-              <i class="fa fa-calendar-check-o mr-1"></i> 签到
-            </button>
-            <button class="text-primary text-sm">管理</button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 游戏内容区域 -->
-      <div class="flex-1 overflow-y-auto scrollbar-hide">
-        <!-- 推荐游戏 -->
-        <div class="bg-secondary p-4 mb-2">
-          <h3 class="text-base font-medium mb-3">推荐游戏</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-secondary rounded-lg overflow-hidden card-hover">
-              <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f47fe5de6d6f47edb92fa9795cbed569~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025538&amp;x-signature=dDGl%2BLfka73%2BqkiVOSmnOmp6XSI%3D" alt="派币扑克" class="w-full h-32 object-cover">
-              <div class="p-2">
-                <h4 class="font-medium text-sm">派币扑克</h4>
-                <p class="text-textLight text-xs">1.2亿人在玩</p>
-              </div>
-            </div>
-            <div class="bg-secondary rounded-lg overflow-hidden card-hover">
-              <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/e7c3f33fe4684b339712586e41d6754d~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025537&amp;x-signature=8uICGaB%2BX0ushfo2tt5RnpsI8lQ%3D" alt="派币麻将" class="w-full h-32 object-cover">
-              <div class="p-2">
-                <h4 class="font-medium text-sm">派币麻将</h4>
-                <p class="text-textLight text-xs">200万人在玩</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 滚动公告栏 -->
-        <div class="bg-black text-white p-2 mb-2 overflow-hidden relative">
-          <div class="flex items-center">
-            <span class="mr-2 text-yellow-400">公告:</span>
-            <div class="marquee-container whitespace-nowrap">
-              <div class="marquee-content">派信娱乐全新上线，快来和好友一起畅玩麻将、斗地主吧！更有神秘新游戏即将推出，敬请期待！</div>
-            </div>
-          </div>
+    <!-- 内容容器 -->
+    <div class="content-container">
+        <!-- 标题部分 -->
+        <div class="title-section">
+            <h1 class="main-title">派信娱乐</h1>
+            <p class="subtitle" style="color: rgb(240, 237, 237); font-size: 14px;">引领派生态游戏潮流</p>
         </div>
 
-        <!-- 热门游戏 -->
-        <div class="bg-secondary p-4 mb-2">
-          <h3 class="text-base font-medium mb-3">热门游戏排行榜</h3>
-          <div class="grid grid-cols-4 gap-4">
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden card-hover">
-                <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f47fe5de6d6f47edb92fa9795cbed569~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025538&amp;x-signature=dDGl%2BLfka73%2BqkiVOSmnOmp6XSI%3D" alt="派币扑克" class="w-full h-full object-cover">
-              </div>
-              <p class="text-xs mt-1">派币扑克</p>
+        <!-- 图片和按钮部分 -->
+        <div class="images-section">
+            <div class="image-button-group">
+                <div class="square-image">
+                    <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/fa2bd1913da44bf0a67ea6f8fecf5745.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165225597B414255485C4073A2&amp;rrcfp=8a172a1a&amp;x-expires=1770627146&amp;x-signature=%2B7agRGEGHYSNIY1daUFcUtUZHcM%3D" alt="派信娱乐官方宣传">
+                </div>
+                <button class="action-button" onclick="handleButtonClick(1)">官方介绍</button>
             </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden card-hover">
-                <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/e7c3f33fe4684b339712586e41d6754d~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025537&amp;x-signature=8uICGaB%2BX0ushfo2tt5RnpsI8lQ%3D" alt="派币麻将" class="w-full h-full object-cover">
-              </div>
-              <p class="text-xs mt-1">派币麻将</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden card-hover">
-                <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ea7bb5d4ef134a80a2bc3c4471805e93~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025537&amp;x-signature=RwYFD90YsttvSOxmubh0OdXWXfk%3D" alt="派币象棋" class="w-full h-full object-cover">
-              </div>
-              <p class="text-xs mt-1">派币象棋</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center cursor-pointer" onclick="showToast('功能正在开发中，敬请期待')">
-                <i class="fa fa-question-circle text-3xl text-textLight"></i>
-              </div>
-              <p class="text-xs mt-1">开发中</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 新游戏 -->
-        <div class="bg-secondary p-4">
-          <h3 class="text-base font-medium mb-3">新游戏预告</h3>
-          <div class="grid grid-cols-4 gap-4">
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center cursor-pointer" onclick="showToast('功能正在开发中，敬请期待')">
-                <i class="fa fa-puzzle-piece text-3xl text-textLight"></i>
-              </div>
-              <p class="text-xs mt-1">派币拼图</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center cursor-pointer" onclick="showToast('功能正在开发中，敬请期待')">
-                <i class="fa fa-diamond text-3xl text-textLight"></i>
-              </div>
-              <p class="text-xs mt-1">派币消消乐</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center cursor-pointer" onclick="showToast('功能正在开发中，敬请期待')">
-                <i class="fa fa-car text-3xl text-textLight"></i>
-              </div>
-              <p class="text-xs mt-1">派币赛车</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center cursor-pointer" onclick="showToast('功能正在开发中，敬请期待')">
-                <i class="fa fa-bullseye text-3xl text-textLight"></i>
-              </div>
-              <p class="text-xs mt-1">派币射击</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- 个人中心页面 -->
-    <section id="profile-page" class="hidden h-full flex flex-col">
-      <!-- 用户信息卡片 -->
-      <div class="bg-secondary p-4 flex items-center">
-        <div class="w-16 h-16 rounded-full overflow-hidden mr-4">
-          <img id="user-avatar" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/8a5d3addf21c43139e0b3118ed0c2c3d~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025520&amp;x-signature=Dqis9eOehzjB8EkyYft%2FKwuxoa0%3D" alt="用户头像" class="w-full h-full object-cover">
-        </div>
-        <div class="flex-1">
-          <h2 id="user-name" class="text-lg font-medium">用户名：15535665478</h2>
-          <p id="user-id" class="text-textLight text-sm">ID：314159</p>
-        </div>
-        <button class="text-textDark">
-          <i class="fa fa-qrcode text-2xl transform scale-120"></i>
-        </button>
-      </div>
-      
-      <!-- 派币资产 -->
-      <div class="mt-2 bg-secondary p-4">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <p class="text-textLight text-sm">我的派币</p>
-            <p class="text-2xl font-bold text-yellow-400">1,234.56</p>
-          </div>
-          <div class="flex space-x-2">
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors" onclick="showToast('充值功能正在开发中，敬请期待')">充值</button>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition-colors" onclick="showToast('提现功能正在开发中，敬请期待')">提现</button>
-          </div>
-        </div>
-        <div class="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p class="text-textLight text-xs">今日收益</p>
-            <p class="text-green-400">+56.78</p>
-          </div>
-          <div>
-            <p class="text-textLight text-xs">本周收益</p>
-            <p class="text-green-400">+324.56</p>
-          </div>
-          <div>
-            <p class="text-textLight text-xs">本月收益</p>
-            <p class="text-green-400">+1,234.56</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 股东功能 -->
-      <div class="mt-2 bg-secondary">
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4 hover:bg-gray-700 transition-colors" onclick="showToast('NFT 股东确权功能正在开发中，敬请期待')">
-            <div class="flex items-center">
-              <i class="fa fa-certificate text-xl mr-3 text-purple-400"></i>
-              <span>NFT 股东确权</span>
+            <div class="image-button-group">
+                <div class="square-image">
+                    <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/c16e8f85181442c883e333d11d633738.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165349366A17818B208236B2E3&amp;rrcfp=8a172a1a&amp;x-expires=1770627229&amp;x-signature=QOjXcA98YIYjouIoh374sPRJ0eU%3D" alt="派信娱乐下载">
+                </div>
+                <button class="action-button" onclick="handleButtonClick(2)">股东查询器</button>
             </div>
-            <i class="fa fa-angle-right text-textLight"></i>
-          </button>
-        </div>
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4 hover:bg-gray-700 transition-colors" onclick="showToast('推广股东身份功能正在开发中，敬请期待')">
-            <div class="flex items-center">
-              <i class="fa fa-users text-xl mr-3 text-blue-400"></i>
-              <span>推广股东身份</span>
-            </div>
-            <i class="fa fa-angle-right text-textLight"></i>
-          </button>
-        </div>
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4 hover:bg-gray-700 transition-colors" onclick="showToast('我的月份红功能正在开发中，敬请期待')">
-            <div class="flex items-center">
-              <i class="fa fa-calendar text-xl mr-3 text-green-400"></i>
-              <span>我的月份红</span>
-            </div>
-            <i class="fa fa-angle-right text-textLight"></i>
-          </button>
-        </div>
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4 hover:bg-gray-700 transition-colors" onclick="showToast('我的季分红功能正在开发中，敬请期待')">
-            <div class="flex items-center">
-              <i class="fa fa-line-chart text-xl mr-3 text-yellow-400"></i>
-              <span>我的季分红</span>
-            </div>
-            <i class="fa fa-angle-right text-textLight"></i>
-          </button>
-        </div>
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4 hover:bg-gray-700 transition-colors" onclick="showToast('股权转让功能正在开发中，敬请期待')">
-            <div class="flex items-center">
-              <i class="fa fa-exchange text-xl mr-3 text-red-400"></i>
-              <span>股权转让</span>
-            </div>
-            <i class="fa fa-angle-right text-textLight"></i>
-          </button>
-        </div>
-      </div>
-      
-      <!-- 关于微信 -->
-      <div class="mt-2 bg-secondary">
-        <div class="border-b border-borderColor">
-          <button class="w-full flex items-center justify-between p-4">
-            <div class="flex items-center">
-              <i class="fa fa-info-circle text-xl mr-3"></i>
-              <span id="about-paixin">关于派信娱乐</span>
-            </div>
-            <div class="flex items-center">
-              <span class="text-textLight text-sm mr-2">版本 8.0.2</span>
-              <i class="fa fa-angle-right text-textLight"></i>
-            </div>
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- 股东专用群按钮 (仅在全球社区页面显示) -->
-  <div id="group-buttons-container" class="fixed bottom-16 left-4 right-4 flex justify-between items-center z-20">
-    <button id="shareholder-group-btn" class="bg-yellow-500 text-black w-24 h-24 rounded-lg flex flex-col items-center justify-center shadow-lg hover:bg-yellow-400 transition-colors">
-      <i class="fa fa-users text-2xl mb-2"></i>
-      <span class="text-xs font-bold text-center">1,000名股东<br>专用群</span>
-    </button>
-    
-    <button id="announcement-btn" class="bg-gradient-to-r from-yellow-500 to-purple-600 text-white w-16 h-16 rounded-lg flex flex-col items-center justify-center shadow-lg hover:scale-105 transition-all">
-      <i class="fa fa-bullhorn text-xl mb-1"></i>
-      <span class="text-xs font-bold">公告</span>
-    </button>
-    
-    <button id="ambassador-group-btn" class="bg-purple-600 text-white w-24 h-24 rounded-lg flex flex-col items-center justify-center shadow-lg hover:bg-purple-500 transition-colors">
-      <i class="fa fa-star text-2xl mb-2"></i>
-      <span class="text-xs font-bold text-center">推广大使<br>股东群</span>
-    </button>
-  </div>
+            <div class="image-button-group">
+                <div class="square-image">
+                    <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/9f37f5db149c4abc909a67946844c16d.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165508B4E979944AC4113659F3&amp;rrcfp=8a172a1a&amp;x-expires=1770627309&amp;x-signature=sD8yhMO7iK2BLFjCNr7kAe8cVBQ%3D" alt="派信娱乐预约">
+                </div>
+                <button class="action-button" onclick="handleButtonClick(3)">app模拟</button>
+            </div>
 
-  <!-- 底部导航栏 -->
-  <nav class="bg-secondary shadow-top z-10">
-    <div class="flex items-center justify-around h-14">
-      <button id="chat-tab" class="flex flex-col items-center justify-center w-1/4 text-primary">
-        <i class="fa fa-comment-o text-xl"></i>
-        <span class="text-xs mt-1">全球社区</span>
-      </button>
-      <button id="games-tab" class="flex flex-col items-center justify-center w-1/4 text-textLight">
-        <i class="fa fa-gamepad text-xl"></i>
-        <span class="text-xs mt-1">派币游戏</span>
-      </button>
-      <button id="contacts-tab" class="flex flex-col items-center justify-center w-1/4 text-textLight">
-        <i class="fa fa-trophy text-xl"></i>
-        <span class="text-xs mt-1">成长系统</span>
-      </button>
-      <button id="profile-tab" class="flex flex-col items-center justify-center w-1/4 text-textLight">
-        <i class="fa fa-user-o text-xl"></i>
-        <span class="text-xs mt-1">我的后台</span>
-      </button>
+
+
+        </div>
     </div>
-  </nav>
 
-  <!-- 关于派信娱乐模态框 -->
-  <div id="about-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-gray-900 rounded-lg w-11/12 max-w-md p-6 border border-purple-500/30">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold text-white">关于派信娱乐</h3>
-        <button id="close-modal" class="text-textLight hover:text-white">
-          <i class="fa fa-times text-xl"></i>
-        </button>
-      </div>
-      <div class="space-y-4">
-        <div class="flex items-center">
-          <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/89144cd8e8a940c19b27e91d31b9897e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&amp;rcl=202601262118193AC09D039081FF14CDF9&amp;rrcfp=f06b921b&amp;x-expires=1772025511&amp;x-signature=LflTyovayyJLeqTAs4CgGg24l9k%3D" alt="派信娱乐" class="w-16 h-16 rounded-full mr-4">
-          <div>
-            <h4 class="text-lg font-medium text-white">派信娱乐</h4>
-            <p class="text-textLight">版本 8.0.2</p>
-          </div>
-        </div>
-        <div class="border-t border-borderColor pt-4">
-          <p class="text-textDark mb-2">派信娱乐是一款集派友社交、游戏、成长系统于一体的综合性娱乐平台，致力于为用户提供优质的社交娱乐体验。</p>
-          <p class="text-textDark mb-2">主要功能：</p>
-          <ul class="list-disc list-inside text-textDark space-y-1">
-            <li>全球社区：连接世界各地的用户，分享生活点滴</li>
-            <li>派币游戏：多种有趣的游戏，赢取派币奖励</li>
-            <li>成长系统：通过参与活动提升等级，解锁更多功能</li>
-            <li>个人中心：管理个人资料，查看成就和收藏</li>
-          </ul>
-        </div>
-        <div class="border-t border-borderColor pt-4 text-center">
-          <p class="text-textLight">© 2026 派信娱乐 版权所有</p>
-        </div>
-      </div>
+    <!-- 自定义滚动条 -->
+    <div class="custom-scrollbar" id="customScrollbar">
+        <div class="scroll-arrow scroll-up" id="scrollUp">↑</div>
+        <div class="scroll-thumb" id="scrollThumb"></div>
+        <div class="scroll-arrow scroll-down" id="scrollDown">↓</div>
     </div>
-  </div>
 
-  <!-- Toast 提示 -->
-  <div id="toast" class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 hidden">
-    <span id="toast-message"></span>
-  </div>
+    <script>
+        // 流星背景动画
+        const canvas = document.getElementById('meteor-background');
+        const ctx = canvas.getContext('2d');
 
-  <script>
-    // Toast 提示函数
-    function showToast(message, duration = 2000) {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toast-message');
-      
-      toastMessage.textContent = message;
-      toast.classList.remove('hidden');
-      
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, duration);
-    }
-
-    // 登录状态管理
-    let isLoggedIn = false;
-    let currentUser = {
-      name: '张三',
-      id: 'zhangsan123'
-    };
-    
-    // 初始化登录状态
-    function initLogin() {
-      const loginBtn = document.getElementById('login-btn');
-      const logoutMenu = document.getElementById('logout-menu');
-      const logoutBtn = document.getElementById('logout-btn');
-      
-      // 检查本地存储中的登录状态
-      const savedLoginState = localStorage.getItem('isLoggedIn');
-      if (savedLoginState === 'true') {
-        isLoggedIn = true;
-        updateLoginButton();
-      }
-      
-      // 登录按钮点击事件
-      loginBtn.addEventListener('click', function() {
-        if (isLoggedIn) {
-          // 已登录状态，切换退出菜单显示
-          logoutMenu.classList.toggle('hidden');
-        } else {
-          // 未登录状态，模拟登录过程
-          simulateLogin();
+        // 设置canvas尺寸
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-      });
-      
-      // 退出登录按钮点击事件
-      logoutBtn.addEventListener('click', function() {
-        isLoggedIn = false;
-        localStorage.setItem('isLoggedIn', 'false');
-        updateLoginButton();
-        logoutMenu.classList.add('hidden');
-        showToast('已退出登录');
-      });
-      
-      // 点击页面其他地方关闭退出菜单
-      document.addEventListener('click', function(event) {
-        if (!loginBtn.contains(event.target) && !logoutMenu.contains(event.target)) {
-          logoutMenu.classList.add('hidden');
-        }
-      });
-    }
-    
-    // 模拟登录过程
-    function simulateLogin() {
-      const loginBtn = document.getElementById('login-btn');
-      
-      // 显示登录中状态
-      loginBtn.textContent = '授权中...';
-      loginBtn.disabled = true;
-      
-      // 模拟网络请求延迟
-      setTimeout(function() {
-        isLoggedIn = true;
-        localStorage.setItem('isLoggedIn', 'true');
-        updateLoginButton();
-        loginBtn.disabled = false;
-        showToast('派币授权登录成功！');
-      }, 1500);
-    }
-    
-    // 更新登录按钮显示
-    function updateLoginButton() {
-      const loginBtn = document.getElementById('login-btn');
-      
-      if (isLoggedIn) {
-        loginBtn.textContent = `PI账号: ${currentUser.name}`;
-        loginBtn.classList.add('bg-yellow-500');
-        loginBtn.classList.remove('bg-yellow-400');
-      } else {
-        loginBtn.textContent = '派币授权登录';
-      }
-    }
-    
-    // 中国省份数据
-    const provinces = [
-      '全部', '北京', '上海', '天津', '重庆', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-      '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西',
-      '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '香港', '澳门', '台湾'
-    ];
 
-    // 城市数据
-    const cityData = {
-      '北京': ['朝阳区', '海淀区', '东城区', '西城区', '丰台区', '石景山区', '通州区', '顺义区', '昌平区', '大兴区'],
-      '上海': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', '虹口区', '杨浦区', '浦东新区', '闵行区', '宝山区'],
-      '广东': ['广州', '深圳', '珠海', '汕头', '佛山', '韶关', '湛江', '肇庆', '江门', '茂名'],
-      '江苏': ['南京', '无锡', '徐州', '常州', '苏州', '南通', '连云港', '淮安', '盐城', '扬州'],
-      '浙江': ['杭州', '宁波', '温州', '嘉兴', '湖州', '绍兴', '金华', '衢州', '舟山', '台州'],
-      '四川': ['成都', '自贡', '攀枝花', '泸州', '德阳', '绵阳', '广元', '遂宁', '内江', '乐山'],
-      '山东': ['济南', '青岛', '淄博', '枣庄', '东营', '烟台', '潍坊', '济宁', '泰安', '威海'],
-      '河南': ['郑州', '开封', '洛阳', '平顶山', '安阳', '鹤壁', '新乡', '焦作', '濮阳', '许昌'],
-      '河北': ['石家庄', '唐山', '秦皇岛', '邯郸', '邢台', '保定', '张家口', '承德', '沧州', '廊坊'],
-      '湖北': ['武汉', '黄石', '十堰', '宜昌', '襄阳', '鄂州', '荆门', '孝感', '荆州', '黄冈'],
-      '湖南': ['长沙', '株洲', '湘潭', '衡阳', '邵阳', '岳阳', '常德', '张家界', '益阳', '郴州'],
-      '福建': ['福州', '厦门', '莆田', '三明', '泉州', '漳州', '南平', '龙岩', '宁德'],
-      '安徽': ['合肥', '芜湖', '蚌埠', '淮南', '马鞍山', '淮北', '铜陵', '安庆', '黄山', '滁州'],
-      '江西': ['南昌', '景德镇', '萍乡', '九江', '新余', '鹰潭', '赣州', '吉安', '宜春', '抚州'],
-      '广西': ['南宁', '柳州', '桂林', '梧州', '北海', '防城港', '钦州', '贵港', '玉林', '百色'],
-      '陕西': ['西安', '铜川', '宝鸡', '咸阳', '渭南', '延安', '汉中', '榆林', '安康', '商洛'],
-      '山西': ['太原', '大同', '阳泉', '长治', '晋城', '朔州', '晋中', '运城', '忻州', '临汾'],
-      '辽宁': ['沈阳', '大连', '鞍山', '抚顺', '本溪', '丹东', '锦州', '营口', '阜新', '辽阳'],
-      '吉林': ['长春', '吉林', '四平', '辽源', '通化', '白山', '松原', '白城', '延边'],
-      '黑龙江': ['哈尔滨', '齐齐哈尔', '鸡西', '鹤岗', '双鸭山', '大庆', '伊春', '佳木斯', '七台河', '牡丹江'],
-      '天津': ['和平区', '河东区', '河西区', '南开区', '河北区', '红桥区', '东丽区', '西青区', '津南区', '北辰区'],
-      '重庆': ['渝中区', '大渡口区', '江北区', '沙坪坝区', '九龙坡区', '南岸区', '北碚区', '綦江区', '大足区', '渝北区'],
-      '云南': ['昆明', '曲靖', '玉溪', '保山', '昭通', '丽江', '普洱', '临沧', '楚雄', '红河'],
-      '贵州': ['贵阳', '六盘水', '遵义', '安顺', '毕节', '铜仁', '黔西南', '黔东南', '黔南'],
-      '甘肃': ['兰州', '嘉峪关', '金昌', '白银', '天水', '武威', '张掖', '平凉', '酒泉', '庆阳'],
-      '内蒙古': ['呼和浩特', '包头', '乌海', '赤峰', '通辽', '鄂尔多斯', '呼伦贝尔', '巴彦淖尔', '乌兰察布', '兴安'],
-      '新疆': ['乌鲁木齐', '克拉玛依', '吐鲁番', '哈密', '昌吉', '博州', '巴州', '阿克苏', '喀什', '和田'],
-      '宁夏': ['银川', '石嘴山', '吴忠', '固原', '中卫'],
-      '青海': ['西宁', '海东', '海北', '黄南', '海南', '果洛', '玉树', '海西'],
-      '西藏': ['拉萨', '日喀则', '昌都', '林芝', '山南', '那曲', '阿里'],
-      '海南': ['海口', '三亚', '三沙', '儋州', '五指山', '琼海', '文昌', '万宁', '东方', '定安'],
-      '香港': ['中西区', '东区', '南区', '湾仔区', '九龙城区', '观塘区', '深水埗区', '黄大仙区', '油尖旺区', '离岛区'],
-      '澳门': ['花地玛堂区', '圣安多尼堂区', '大堂区', '望德堂区', '风顺堂区', '嘉模堂区', '圣方济各堂区'],
-      '台湾': ['台北', '新北', '桃园', '台中', '台南', '高雄', '基隆', '新竹', '嘉义', '苗栗']
-    };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-    // 模拟数据
-    const messageData = [
-      {
-        id: "msg1",
-        avatar: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f128161a3d1f4c6cbc3f84713baebab9~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025520&x-signature=Nl7qjGXVOIZTABdNEeJrB2sjEpU%3D",
-        name: "斗地主专用总群",
-        lastMessage: "最近怎么样？",
-        time: "10:30",
-        unreadCount: 2,
-        messages: [
-          {
-            id: "msg1-1",
-            content: "你好啊",
-            type: "text",
-            sender: "me",
-            time: "10:25",
-            status: "read"
-          },
-          {
-            id: "msg1-2",
-            content: "最近怎么样？",
-            type: "text",
-            sender: "other",
-            time: "10:30",
-            status: "delivered"
-          },
-          {
-            id: "msg1-3",
-            content: "工作忙不忙？",
-            type: "text",
-            sender: "other",
-            time: "10:31",
-            status: "delivered"
-          }
-        ]
-      },
-      {
-        id: "msg2",
-        avatar: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/73aee91befb645e98c91d670aa8c9008~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025521&x-signature=RMQLrAh3VsncxhcyyXgfHj5bxX4%3D",
-        name: "麻将麻友专用群",
-        lastMessage: "明天一起吃饭吧",
-        time: "昨天",
-        unreadCount: 0,
-        messages: [
-          {
-            id: "msg2-1",
-            content: "明天有空吗？",
-            type: "text",
-            sender: "other",
-            time: "昨天 18:30",
-            status: "read"
-          },
-          {
-            id: "msg2-2",
-            content: "有啊，怎么了？",
-            type: "text",
-            sender: "me",
-            time: "昨天 18:35",
-            status: "read"
-          },
-          {
-            id: "msg2-3",
-            content: "明天一起吃饭吧",
-            type: "text",
-            sender: "other",
-            time: "昨天 18:40",
-            status: "read"
-          }
-        ]
-      },
-      {
-        id: "msg3",
-        avatar: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/8a5d3addf21c43139e0b3118ed0c2c3d~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025520&x-signature=Dqis9eOehzjB8EkyYft%2FKwuxoa0%3D",
-        name: "全国派游戏闲聊总群",
-        lastMessage: "发给你一个好玩的游戏",
-        time: "周一",
-        unreadCount: 0,
-        messages: [
-          {
-            id: "msg3-1",
-            content: "发给你一个好玩的游戏",
-            type: "text",
-            sender: "other",
-            time: "周一 14:20",
-            status: "read"
-          },
-          {
-            id: "msg3-2",
-            content: "好的，我看看",
-            type: "text",
-            sender: "me",
-            time: "周一 14:25",
-            status: "read"
-          }
-        ]
-      },
-      {
-        id: "msg4",
-        avatar: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/89144cd8e8a940c19b27e91d31b9897e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025511&x-signature=LflTyovayyJLeqTAs4CgGg24l9k%3D",
-        name: "派信娱乐官方群",
-        lastMessage: "@所有人 新版本已发布，快来更新体验！",
-        time: "周一",
-        unreadCount: 5,
-        messages: [
-          {
-            id: "msg4-1",
-            content: "大家好，我是新来的管理员小王",
-            type: "text",
-            sender: "other",
-            time: "周一 10:00",
-            status: "read"
-          },
-          {
-            id: "msg4-2",
-            content: "欢迎欢迎",
-            type: "text",
-            sender: "me",
-            time: "周一 10:05",
-            status: "read"
-          },
-          {
-            id: "msg4-3",
-            content: "@所有人 新版本已发布，快来更新体验！",
-            type: "text",
-            sender: "other",
-            time: "周一 11:30",
-            status: "delivered"
-          }
-        ]
-      }
-    ];
-
-    // DOM 元素
-    const pages = {
-      chat: document.getElementById('chat-page'),
-      contacts: document.getElementById('contacts-page'),
-      games: document.getElementById('games-page'),
-      profile: document.getElementById('profile-page')
-    };
-
-    const tabs = {
-      chat: document.getElementById('chat-tab'),
-      contacts: document.getElementById('contacts-tab'),
-      games: document.getElementById('games-tab'),
-      profile: document.getElementById('profile-tab')
-    };
-
-    const pageTitle = document.getElementById('page-title');
-    const messageList = document.getElementById('message-list');
-    const chatWindow = document.getElementById('chat-window');
-    const chatName = document.getElementById('chat-name');
-    const chatContent = document.getElementById('chat-content');
-    const messageInput = document.getElementById('message-input');
-    const sendMessageBtn = document.getElementById('send-message');
-    const backToListBtn = document.getElementById('back-to-list');
-
-    // 当前选中的消息和页面
-    let currentMessage = null;
-    let currentPage = 'chat';
-
-    // 初始化
-    function init() {
-      renderMessageList();
-      setupEventListeners();
-      initMarquee();
-    }
-
-    // 渲染消息列表
-    function renderMessageList() {
-      messageList.innerHTML = '';
-      
-      messageData.forEach(msg => {
-        const messageItem = document.createElement('div');
-        messageItem.className = 'flex items-center p-3 border-b border-borderColor hover:bg-secondary cursor-pointer';
-        messageItem.dataset.id = msg.id;
-        
-        messageItem.innerHTML = `
-          <div class="relative mr-3">
-            <div class="w-12 h-12 rounded-full overflow-hidden">
-              <img src="${msg.avatar}" alt="${msg.name}" class="w-full h-full object-cover">
-            </div>
-            ${msg.unreadCount > 0 ? `<span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">${msg.unreadCount}</span>` : ''}
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1">
-              <h3 class="font-medium truncate">${msg.name}</h3>
-              <span class="text-textLight text-xs">${msg.time}</span>
-            </div>
-            <p class="text-textLight text-sm truncate">${msg.lastMessage}</p>
-          </div>
-        `;
-        
-        messageList.appendChild(messageItem);
-        
-        // 添加点击事件
-        messageItem.addEventListener('click', () => openChat(msg));
-      });
-    }
-
-    // 打开聊天窗口
-    function openChat(msg) {
-      currentMessage = msg;
-      
-      // 更新聊天窗口标题
-      chatName.textContent = msg.name;
-      
-      // 渲染聊天内容
-      renderChatContent(msg);
-      
-      // 在移动端显示聊天窗口
-      if (window.innerWidth < 768) {
-        document.querySelector('#chat-page > div:first-child').classList.add('hidden');
-        chatWindow.classList.remove('hidden');
-        chatWindow.classList.add('flex');
-      }
-      
-      // 重置未读消息数
-      msg.unreadCount = 0;
-      renderMessageList();
-    }
-
-    // 渲染聊天内容
-    function renderChatContent(msg) {
-      chatContent.innerHTML = '';
-      
-      if (msg.messages.length === 0) {
-        chatContent.innerHTML = `
-          <div class="text-center text-textLight text-sm">
-            没有聊天记录，开始聊天吧
-          </div>
-        `;
-        return;
-      }
-      
-      // 添加日期分隔线
-      let lastDate = '';
-      
-      msg.messages.forEach(message => {
-        const messageDate = message.time.split(' ')[0];
-        if (messageDate !== lastDate) {
-          const dateDivider = document.createElement('div');
-          dateDivider.className = 'text-center text-textLight text-xs my-4';
-          dateDivider.textContent = messageDate === '今天' ? '今天' : messageDate === '昨天' ? '昨天' : messageDate;
-          chatContent.appendChild(dateDivider);
-          lastDate = messageDate;
-        }
-        
-        const messageDiv = document.createElement('div');
-        
-        if (message.sender === 'me') {
-          // 我的消息
-          messageDiv.className = 'flex justify-end items-end mb-4';
-          messageDiv.innerHTML = `
-            <div class="max-w-[70%]">
-              <div class="flex items-center justify-end mb-1">
-                <span class="text-xs text-textLight mr-2">${message.time.split(' ')[1] || message.time}</span>
-                ${message.status === 'read' ? '<i class="fa fa-check-circle text-primary text-xs"></i>' : 
-                  message.status === 'delivered' ? '<i class="fa fa-check text-textLight text-xs"></i>' : 
-                  '<i class="fa fa-clock-o text-textLight text-xs"></i>'}
-              </div>
-              <div class="message-bubble-right p-3">
-                ${message.content}
-              </div>
-            </div>
-          `;
-        } else {
-          // 对方的消息
-          messageDiv.className = 'flex items-end mb-4';
-          messageDiv.innerHTML = `
-            <div class="w-8 h-8 rounded-full overflow-hidden mr-2">
-              <img src="${msg.avatar}" alt="${msg.name}" class="w-full h-full object-cover">
-            </div>
-            <div class="max-w-[70%]">
-              <div class="text-xs text-textLight mb-1">${message.time.split(' ')[1] || message.time}</div>
-              <div class="message-bubble-left p-3 shadow-sm">
-                ${message.content}
-              </div>
-            </div>
-          `;
-        }
-        
-        chatContent.appendChild(messageDiv);
-      });
-      
-      // 滚动到底部
-      chatContent.scrollTop = chatContent.scrollHeight;
-    }
-
-    // 发送消息
-    function sendMessage() {
-      const content = messageInput.value.trim();
-      
-      if (!content || !currentMessage) return;
-      
-      // 创建新消息
-      const newMessage = {
-        id: `msg${currentMessage.id}-${currentMessage.messages.length + 1}`,
-        content: content,
-        type: 'text',
-        sender: 'me',
-        time: getCurrentTime(),
-        status: 'sending'
-      };
-      
-      // 添加到消息列表
-      currentMessage.messages.push(newMessage);
-      currentMessage.lastMessage = content;
-      currentMessage.time = '今天';
-      
-      // 重新渲染聊天内容和消息列表
-      renderChatContent(currentMessage);
-      renderMessageList();
-      
-      // 清空输入框
-      messageInput.value = '';
-      
-      // 模拟消息发送状态变化
-      setTimeout(() => {
-        newMessage.status = 'delivered';
-        renderChatContent(currentMessage);
-      }, 1000);
-      
-      setTimeout(() => {
-        newMessage.status = 'read';
-        renderChatContent(currentMessage);
-      }, 2000);
-      
-      // 模拟对方回复
-      setTimeout(() => {
-        const replyMessage = {
-          id: `msg${currentMessage.id}-${currentMessage.messages.length + 1}`,
-          content: getAutoReply(),
-          type: 'text',
-          sender: 'other',
-          time: getCurrentTime(),
-          status: 'delivered'
-        };
-        
-        currentMessage.messages.push(replyMessage);
-        currentMessage.lastMessage = replyMessage.content;
-        
-        renderChatContent(currentMessage);
-        renderMessageList();
-      }, 3000);
-    }
-
-    // 获取当前时间
-    function getCurrentTime() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    }
-
-    // 获取自动回复
-    function getAutoReply() {
-      const replies = [
-        "好的",
-        "收到",
-        "明白了",
-        "没问题",
-        "稍等，我看一下",
-        "这个我需要考虑一下",
-        "你在哪里？",
-        "什么时候见面？",
-        "好啊，一起去吧",
-        "谢谢分享！"
-      ];
-      
-      return replies[Math.floor(Math.random() * replies.length)];
-    }
-
-    // 切换页面
-    function switchPage(page) {
-      // 隐藏所有页面
-      Object.values(pages).forEach(p => p.classList.add('hidden'));
-      
-      // 重置所有标签样式
-      Object.values(tabs).forEach(t => {
-        t.classList.remove('text-primary');
-        t.classList.add('text-textLight');
-      });
-      
-      // 显示选中的页面和标签
-      pages[page].classList.remove('hidden');
-      tabs[page].classList.remove('text-textLight');
-      tabs[page].classList.add('text-primary');
-      
-      // 更新页面标题
-      switch (page) {
-        case 'chat':
-          pageTitle.textContent = '全球社群.Pi xin  yu  le';
-          break;
-        case 'contacts':
-          pageTitle.textContent = '成长系统';
-          break;
-        case 'games':
-          pageTitle.textContent = '派币游戏';
-          break;
-        case 'profile':
-          pageTitle.textContent = '我的后台';
-          break;
-      }
-      
-      // 控制股东专用群按钮的显示/隐藏
-      const groupButtonsContainer = document.getElementById('group-buttons-container');
-      if (page === 'chat') {
-        groupButtonsContainer.classList.remove('hidden');
-      } else {
-        groupButtonsContainer.classList.add('hidden');
-      }
-      
-      currentPage = page;
-      
-      // 在移动端返回消息列表
-      if (page === 'chat' && window.innerWidth < 768) {
-        document.querySelector('#chat-page > div:first-child').classList.remove('hidden');
-        chatWindow.classList.add('hidden');
-        chatWindow.classList.remove('flex');
-      }
-    }
-
-    // 渲染省份按钮
-    function renderProvinceButtons() {
-      const provinceButtons = document.getElementById('province-buttons');
-      provinceButtons.innerHTML = '';
-      
-      const provinces = [
-        '北京', '上海', '天津', '重庆', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-        '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东',
-        '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆'
-      ];
-      
-      provinces.forEach(province => {
-        const button = document.createElement('button');
-        button.className = 'province-btn';
-        button.textContent = province;
-        button.dataset.province = province;
-        
-        button.addEventListener('click', () => {
-          // 移除其他按钮的选中状态
-          document.querySelectorAll('.province-btn').forEach(btn => {
-            btn.classList.remove('bg-primary');
-            btn.classList.add('bg-purple-800');
-          });
-          
-          // 添加当前按钮的选中状态
-          button.classList.remove('bg-purple-800');
-          button.classList.add('bg-primary');
-          
-          // 显示对应省份的城市群聊
-          showCityChats(province);
-        });
-        
-        provinceButtons.appendChild(button);
-      });
-    }
-    
-    // 显示城市群聊
-    function showCityChats(province) {
-      // 模拟数据 - 实际应用中应该从服务器获取
-      const cityChats = {
-        '北京': [
-          { id: 'beijing-1', name: '北京Pi友交流群', avatar: 'https://p3-doubao-search-sign.byteimg.com/labis/a9b0ec27e751f6cc2d0286acdb1e8e82~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1784971223&x-signature=1ig3VfaXZJ7bwhLwzFFl9aC%2FADM%3D', lastMessage: '欢迎新朋友加入！', time: '10:30', unreadCount: 5 },
-          { id: 'beijing-2', name: '北京海淀区Pi友群', avatar: 'https://p11-doubao-search-sign.byteimg.com/labis/image/befa412e11548eb94567fbe317985884~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1784971223&x-signature=EmDsRPoVBIGFdWCXApiFqARIImo%3D', lastMessage: '今天派币价格走势不错', time: '昨天', unreadCount: 0 }
-        ],
-        '上海': [
-          { id: 'shanghai-1', name: '上海Pi友交流群', avatar: 'https://p3-doubao-search-sign.byteimg.com/tos-cn-i-xv4ileqgde/e94b02188a0c4d1d9aa8bdf934aae814~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1784971223&x-signature=WRR1hN4ErrXDRvAmsXvLwqq%2FpRY%3D', lastMessage: '周末有线下聚会，有人参加吗？', time: '周一', unreadCount: 3 },
-          { id: 'shanghai-2', name: '上海浦东新区Pi友群', avatar: 'https://p11-doubao-search-sign.byteimg.com/tos-cn-i-qvj2lq49k0/ddd687bdd18041f6a6f7d0b22d1636bb~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1784971223&x-signature=RSPgOOegvv6SY9Dnw1wgL%2FtWdtk%3D', lastMessage: '分享一个Pi Network的最新消息', time: '周一', unreadCount: 0 }
-        ]
-      };
-      
-      // 如果没有该省份的城市群聊数据，使用默认数据
-      const chats = cityChats[province] || [
-        { id: `${province.toLowerCase()}-1`, name: `${province}Pi友交流群`, avatar: 'https://p3-doubao-search-sign.byteimg.com/labis/a9b0ec27e751f6cc2d0286acdb1e8e82~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1784971223&x-signature=1ig3VfaXZJ7bwhLwzFFl9aC%2FADM%3D', lastMessage: `欢迎加入${province}Pi友群！`, time: '刚刚', unreadCount: 1 }
-      ];
-      
-      // 更新消息列表
-      const messageList = document.getElementById('message-list');
-      messageList.innerHTML = '';
-      
-      chats.forEach(chat => {
-        const messageItem = document.createElement('div');
-        messageItem.className = 'flex items-center p-3 border-b border-borderColor hover:bg-secondary cursor-pointer';
-        messageItem.dataset.id = chat.id;
-        
-        messageItem.innerHTML = `
-          <div class="relative mr-3">
-            <div class="w-12 h-12 rounded-full overflow-hidden">
-              <img src="${chat.avatar}" alt="${chat.name}" class="w-full h-full object-cover">
-            </div>
-            ${chat.unreadCount > 0 ? `<span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">${chat.unreadCount}</span>` : ''}
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1">
-              <h3 class="font-medium truncate">${chat.name}</h3>
-              <span class="text-textLight text-xs">${chat.time}</span>
-            </div>
-            <p class="text-textLight text-sm truncate">${chat.lastMessage}</p>
-          </div>
-        `;
-        
-        messageList.appendChild(messageItem);
-        
-        // 添加点击事件
-        messageItem.addEventListener('click', () => openChat(chat));
-      });
-    }
-    
-    // 股东群聊数据
-    const shareholderGroup = {
-      id: "shareholder-group",
-      avatar: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/89144cd8e8a940c19b27e91d31b9897e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025511&x-signature=LflTyovayyJLeqTAs4CgGg24l9k%3D",
-      name: "1,000名股东专用群",
-      lastMessage: "欢迎尊贵的股东加入！",
-      time: "今天",
-      unreadCount: 10,
-      messages: [
-        { id: "sh-1", content: "欢迎尊贵的股东加入！", type: "text", sender: "other", time: "今天 08:00", status: "read" },
-        { id: "sh-2", content: "感谢大家对派信娱乐的支持", type: "text", sender: "other", time: "今天 08:05", status: "read" },
-        { id: "sh-3", content: "作为股东，我们将获得更多权益", type: "text", sender: "other", time: "今天 08:10", status: "read" },
-        { id: "sh-4", content: "期待派信娱乐的发展", type: "text", sender: "me", time: "今天 08:15", status: "read" },
-        { id: "sh-5", content: "本月分红即将发放，请大家留意", type: "text", sender: "other", time: "今天 08:20", status: "delivered" }
-      ]
-    };
-
-    const ambassadorGroup = {
-      id: "ambassador-group",
-      avatar: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ea7bb5d4ef134a80a2bc3c4471805e93~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202601262118193AC09D039081FF14CDF9&rrcfp=f06b921b&x-expires=1772025537&x-signature=RwYFD90YsttvSOxmubh0OdXWXfk%3D",
-      name: "推广大使股东群",
-      lastMessage: "推广奖励政策已更新",
-      time: "昨天",
-      unreadCount: 5,
-      messages: [
-        { id: "am-1", content: "推广奖励政策已更新", type: "text", sender: "other", time: "昨天 19:00", status: "read" },
-        { id: "am-2", content: "新的推广方案更加有吸引力", type: "text", sender: "other", time: "昨天 19:05", status: "read" },
-        { id: "am-3", content: "我已经邀请了10个新用户", type: "text", sender: "me", time: "昨天 19:10", status: "read" },
-        { id: "am-4", content: "太棒了！继续加油", type: "text", sender: "other", time: "昨天 19:15", status: "delivered" }
-      ]
-    };
-
-    // 设置事件监听器
-    function setupEventListeners() {
-      // 标签切换事件
-      tabs.chat.addEventListener('click', () => switchPage('chat'));
-      tabs.contacts.addEventListener('click', () => switchPage('contacts'));
-      tabs.games.addEventListener('click', () => switchPage('games'));
-      tabs.profile.addEventListener('click', () => switchPage('profile'));
-      
-      // 发送消息事件
-      sendMessageBtn.addEventListener('click', sendMessage);
-      messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          sendMessage();
-        }
-      });
-      
-      // 返回消息列表事件
-      backToListBtn.addEventListener('click', () => {
-        document.querySelector('#chat-page > div:first-child').classList.remove('hidden');
-        chatWindow.classList.add('hidden');
-        chatWindow.classList.remove('flex');
-      });
-      
-      // 返回省份列表事件
-      document.getElementById('back-to-provinces').addEventListener('click', () => {
-        document.getElementById('message-list-container').classList.remove('hidden');
-        document.getElementById('city-list-container').classList.add('hidden');
-        
-        // 选中"全部"按钮
-        document.querySelectorAll('.province-btn').forEach(btn => {
-          btn.classList.remove('bg-primary');
-          if (btn.dataset.province === '全部') {
-            btn.classList.add('bg-primary');
-          }
-        });
-      });
-      
-      // 股东群按钮点击事件
-      document.getElementById('shareholder-group-btn').addEventListener('click', () => {
-        // 切换到聊天页面
-        switchPage('chat');
-        // 打开股东群聊
-        openChat(shareholderGroup);
-      });
-
-      // 推广大使群按钮点击事件
-      document.getElementById('ambassador-group-btn').addEventListener('click', () => {
-        // 切换到聊天页面
-        switchPage('chat');
-        // 打开推广大使群聊
-        openChat(ambassadorGroup);
-      });
-      
-      // 公告按钮点击事件
-      document.getElementById('announcement-btn').addEventListener('click', () => {
-        document.getElementById('announcement-modal').classList.remove('hidden');
-      });
-      
-      // 关闭公告模态框
-      document.getElementById('close-announcement-modal').addEventListener('click', () => {
-        document.getElementById('announcement-modal').classList.add('hidden');
-      });
-      
-      document.getElementById('close-announcement-btn').addEventListener('click', () => {
-        document.getElementById('announcement-modal').classList.add('hidden');
-      });
-      
-      // 点击模态框外部关闭
-      document.getElementById('announcement-modal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('announcement-modal')) {
-          document.getElementById('announcement-modal').classList.add('hidden');
-        }
-      });
-      
-      // 添加群聊按钮点击事件
-      document.getElementById('add-group-btn').addEventListener('click', () => {
-        // 创建下拉菜单
-        const menu = document.createElement('div');
-        menu.className = 'absolute right-4 z-50 bg-gray-900 rounded-lg shadow-lg border border-borderColor overflow-hidden';
-        menu.style.top = 'calc(100% + 5px)';
-        menu.innerHTML = `
-          <button class="w-full text-left px-4 py-3 hover:bg-purple-800 flex items-center">
-            <i class="fa fa-qrcode text-primary mr-3"></i>
-            <span>扫一扫进群</span>
-          </button>
-          <button class="w-full text-left px-4 py-3 hover:bg-purple-800 flex items-center">
-            <i class="fa fa-plus-circle text-primary mr-3"></i>
-            <span>创建群聊</span>
-          </button>
-          <button class="w-full text-left px-4 py-3 hover:bg-purple-800 flex items-center">
-            <i class="fa fa-user-plus text-primary mr-3"></i>
-            <span>添加群聊</span>
-          </button>
-        `;
-        
-        // 将菜单添加到按钮的父元素中
-        const btnContainer = document.getElementById('add-group-btn').parentElement;
-        btnContainer.style.position = 'relative';
-        btnContainer.appendChild(menu);
-        
-        // 为菜单项添加点击事件
-        menu.querySelectorAll('button').forEach((btn, index) => {
-          btn.addEventListener('click', () => {
-            switch(index) {
-              case 0:
-                alert('扫一扫进群功能正在开发中，敬请期待！');
-                break;
-              case 1:
-                alert('创建群聊功能正在开发中，敬请期待！');
-                break;
-              case 2:
-                alert('添加群聊功能正在开发中，敬请期待！');
-                break;
+        // 流星类
+        class Meteor {
+            constructor() {
+                this.reset();
             }
-            // 移除菜单
-            btnContainer.removeChild(menu);
-          });
-        });
-        
-        // 点击其他地方关闭菜单
-        document.addEventListener('click', function closeMenu(e) {
-          if (!menu.contains(e.target) && e.target !== document.getElementById('add-group-btn')) {
-            if (btnContainer.contains(menu)) {
-              btnContainer.removeChild(menu);
-            }
-            document.removeEventListener('click', closeMenu);
-          }
-        });
-      });
 
-      // 窗口大小变化事件
-      window.addEventListener('resize', () => {
-        if (currentPage === 'chat') {
-          if (window.innerWidth >= 768) {
-            document.querySelector('#chat-page > div:first-child').classList.remove('hidden');
-            chatWindow.classList.remove('hidden');
-            chatWindow.classList.add('flex');
-          } else if (!currentMessage) {
-            document.querySelector('#chat-page > div:first-child').classList.remove('hidden');
-            chatWindow.classList.add('hidden');
-            chatWindow.classList.remove('flex');
-          }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -10;
+                this.length = Math.random() * 100 + 50;
+                this.speed = Math.random() * 5 + 3;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.angle = Math.PI / 4 + (Math.random() * Math.PI / 6 - Math.PI / 12);
+                this.size = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+
+                if (this.y > canvas.height || this.x < -this.length || this.x > canvas.width + this.length) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = this.size;
+                ctx.stroke();
+
+                // 流星尾巴
+                const gradient = ctx.createLinearGradient(
+                    this.x, this.y,
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0.3)');
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size * 3;
+                ctx.stroke();
+                ctx.restore();
+            }
         }
-      });
-      
-      // 签到功能实现
-      function handleCheckin(btnId) {
-        // 检查是否已签到
-        const today = new Date().toDateString();
-        const lastCheckin = localStorage.getItem('lastCheckin');
-        
-        if (lastCheckin === today) {
-          alert('您今天已经签到过了！');
-        } else {
-          // 模拟签到过程
-          const checkinBtn = document.getElementById(btnId);
-          checkinBtn.disabled = true;
-          checkinBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-1"></i> 签到中...';
-          
-          setTimeout(() => {
-            // 保存签到记录
-            localStorage.setItem('lastCheckin', today);
+
+        // 创建流星
+        const meteors = [];
+        for (let i = 0; i < 20; i++) {
+            meteors.push(new Meteor());
+        }
+
+        // 动画循环
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 随机奖励
-            const rewards = [1, 2, 5, 10];
-            const reward = rewards[Math.floor(Math.random() * rewards.length)];
+            meteors.forEach(meteor => {
+                meteor.update();
+                meteor.draw();
+            });
             
-            // 显示签到成功
-            checkinBtn.innerHTML = '<i class="fa fa-check mr-1"></i> 已签到';
-            checkinBtn.classList.remove('bg-yellow-500');
-            checkinBtn.classList.add('bg-green-500');
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // 按钮点击处理
+        function handleButtonClick(buttonId) {
+            // 播放点击音效
+            const clickSound = document.getElementById('click-sound');
+            clickSound.currentTime = 0;
+            clickSound.volume = 0.5; // 确保音量适中
+            clickSound.play().then(() => {
+                console.log('音效播放成功');
+            }).catch(error => {
+                console.log('无法播放音效:', error);
+                // 如果自动播放被阻止，尝试用户交互后播放
+                setTimeout(() => {
+                    clickSound.play().catch(e => console.log('二次尝试播放失败:', e));
+                }, 100);
+            });
             
-            // 显示奖励
-            alert(`签到成功！获得 ${reward} 派币奖励！`);
+            const actions = {
+                1: () => window.location.href = 'https://games-gameannouncement.netlify.app/',
+                2: () => window.location.href = 'https://games-code-stockholder.netlify.app/',
+                3: () => window.location.href = 'https://games-code.netlify.app/'
+            };
             
-            // 恢复按钮状态
+            if (actions[buttonId]) {
+                actions[buttonId]();
+            }
+        }
+
+        // 初始化Lucide图标
+        lucide.createIcons();
+
+        // 页面加载后自动刷新一次（仅在首次访问时）
+        if (!localStorage.getItem('pageRefreshed')) {
             setTimeout(() => {
-              checkinBtn.disabled = false;
-              checkinBtn.innerHTML = '<i class="fa fa-calendar-check-o mr-1"></i> 签到';
-              checkinBtn.classList.remove('bg-green-500');
-              checkinBtn.classList.add('bg-yellow-500');
-            }, 2000);
-          }, 1000);
+                localStorage.setItem('pageRefreshed', 'true');
+                window.location.reload();
+            }, 1000); // 1秒后刷新
         }
-      }
-      
-      // 顶部签到按钮事件
-      document.getElementById('checkin-btn').addEventListener('click', () => {
-        handleCheckin('checkin-btn');
-      });
-      
-      // 游戏页面签到按钮事件
-      document.getElementById('games-checkin-btn').addEventListener('click', () => {
-        handleCheckin('games-checkin-btn');
-      });
-      
-      // 搜索按钮事件
-      document.getElementById('search-btn').addEventListener('click', () => {
-        showToast('搜索功能');
-      });
-      
-      // 更多按钮事件
-      document.getElementById('more-btn').addEventListener('click', () => {
-        showToast('更多功能');
-      });
 
-      // 游戏卡片点击事件
-      const gameCards = document.querySelectorAll('.card-hover');
-      gameCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const gameName = card.querySelector('h4')?.textContent || '游戏';
-          showToast(`正在进入${gameName}...`);
-        });
-      });
-    }
+        // 自定义滚动条功能
+        (function() {
+            const scrollbar = document.getElementById('customScrollbar');
+            const scrollThumb = document.getElementById('scrollThumb');
+            const scrollUp = document.getElementById('scrollUp');
+            const scrollDown = document.getElementById('scrollDown');
+            let isDragging = false;
+            let startY = 0;
+            let startScrollTop = 0;
 
-    // 初始化滚动公告
-    function initMarquee() {
-      const container = document.querySelector('.marquee-container');
-      const content = document.querySelector('.marquee-content');
-      
-      if (!container || !content) return;
-      
-      const clone = content.cloneNode(true);
-      container.appendChild(clone);
-      
-      let animationDuration = 30; // 秒
-      
-      function animateMarquee() {
-        const containerWidth = container.offsetWidth;
-        const contentWidth = content.offsetWidth;
-        
-        if (contentWidth <= containerWidth) return;
-        
-        const style = document.createElement('style');
-        style.textContent = `
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-${contentWidth}px); }
-          }
-          .marquee-content {
-            animation: marquee ${animationDuration}s linear infinite;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-      
-      // 等待内容加载完成后初始化滚动
-      setTimeout(animateMarquee, 100);
-    }
+            // 更新滚动条位置
+            function updateScrollThumbPosition() {
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercentage = (scrollTop / scrollHeight) * 100;
+                const thumbPosition = (scrollPercentage / 100) * (scrollbar.offsetHeight - scrollThumb.offsetHeight - 80); // 80px for arrows
+                scrollThumb.style.top = (40 + thumbPosition) + 'px'; // 40px for top arrow
+            }
 
-    // 初始化关于模态框
-    function initAboutModal() {
-      const aboutButton = document.getElementById('about-paixin');
-      const aboutModal = document.getElementById('about-modal');
-      const closeModal = document.getElementById('close-modal');
-      
-      // 打开模态框
-      aboutButton.addEventListener('click', function() {
-        aboutModal.classList.remove('hidden');
-      });
-      
-      // 关闭模态框
-      closeModal.addEventListener('click', function() {
-        aboutModal.classList.add('hidden');
-      });
-      
-      // 点击模态框外部关闭
-      aboutModal.addEventListener('click', function(event) {
-        if (event.target === aboutModal) {
-          aboutModal.classList.add('hidden');
-        }
-      });
-    }
-    
-    // 初始化应用
-    init();
-    initLogin();
-    initAboutModal();
-  </script>
+            // 滚动到指定位置
+            function scrollToPosition(position) {
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const targetScrollTop = (position / 100) * scrollHeight;
+                window.scrollTo({
+                    top: targetScrollTop,
+                    behavior: 'smooth'
+                });
+            }
 
+            // 滚动按钮点击事件
+            scrollUp.addEventListener('click', () => {
+                const currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                const newScrollPos = Math.max(0, currentScrollPos - 400);
+                window.scrollTo({
+                    top: newScrollPos,
+                    behavior: 'smooth'
+                });
+            });
 
+            scrollDown.addEventListener('click', () => {
+                const currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                const documentHeight = document.documentElement.scrollHeight;
+                const windowHeight = window.innerHeight;
+                const maxScrollPos = documentHeight - windowHeight;
+                const newScrollPos = Math.min(maxScrollPos, currentScrollPos + 400);
+                window.scrollTo({
+                    top: newScrollPos,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 滚动条拖动事件
+            scrollThumb.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startY = e.clientY;
+                startScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                scrollThumb.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const deltaY = e.clientY - startY;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollbarHeight = scrollbar.offsetHeight - scrollThumb.offsetHeight - 80;
+                const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
+                
+                window.scrollTo({
+                    top: startScrollTop + scrollDelta,
+                    behavior: 'auto'
+                });
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                scrollThumb.style.cursor = 'grab';
+            });
+
+            // 触摸设备支持
+            scrollThumb.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startY = e.touches[0].clientY;
+                startScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+
+                const deltaY = e.touches[0].clientY - startY;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollbarHeight = scrollbar.offsetHeight - scrollThumb.offsetHeight - 80;
+                const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
+                
+                window.scrollTo({
+                    top: startScrollTop + scrollDelta,
+                    behavior: 'auto'
+                });
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // 监听页面滚动
+            window.addEventListener('scroll', updateScrollThumbPosition);
+
+            // 初始化滚动条位置
+            updateScrollThumbPosition();
+
+            // 窗口大小改变时更新
+            window.addEventListener('resize', updateScrollThumbPosition);
+        })();
+    </script>
 
 </body></html>
