@@ -1,4 +1,6 @@
-<html lang="zh-CN"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>派信娱乐 - 引领游戏潮流</title>
@@ -14,16 +16,9 @@
         body {
             font-family: 'Kaiti', 'STKaiti', 'KaiTi', '楷体', sans-serif;
             background-color: #000;
-            overflow-y: auto;
+            overflow: hidden;
             height: 100vh;
             width: 100vw;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-        }
-
-        /* 隐藏默认滚动条 */
-        body::-webkit-scrollbar {
-            display: none; /* Chrome, Safari and Opera */
         }
 
         /* 流星背景 */
@@ -77,12 +72,12 @@
         .content-container {
             position: relative;
             z-index: 2;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 1vh 0 20vh;
+            padding: 1vh 0 5vh;
             gap: 1.5vh;
         }
 
@@ -209,77 +204,6 @@
         .action-button:active {
             transform: translateY(0);
         }
-
-        /* 自定义滚动条样式 */
-        .custom-scrollbar {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 200px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .scroll-arrow {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 215, 0, 0.8);
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .scroll-arrow:hover {
-            background-color: rgba(255, 215, 0, 1);
-            transform: scale(1.1);
-        }
-
-        .scroll-thumb {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 215, 0, 0.9);
-            border-radius: 50%;
-            cursor: grab;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-        }
-
-        .scroll-thumb:active {
-            cursor: grabbing;
-            transform: scale(1.1);
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .custom-scrollbar {
-                right: 10px;
-                width: 30px;
-                height: 150px;
-            }
-            
-            .scroll-arrow {
-                width: 30px;
-                height: 30px;
-                font-size: 16px;
-            }
-            
-            .scroll-thumb {
-                width: 30px;
-                height: 30px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -328,17 +252,7 @@
                 </div>
                 <button class="action-button" onclick="handleButtonClick(3)">app模拟</button>
             </div>
-
-
-
         </div>
-    </div>
-
-    <!-- 自定义滚动条 -->
-    <div class="custom-scrollbar" id="customScrollbar">
-        <div class="scroll-arrow scroll-up" id="scrollUp">↑</div>
-        <div class="scroll-thumb" id="scrollThumb"></div>
-        <div class="scroll-arrow scroll-down" id="scrollDown">↓</div>
     </div>
 
     <script>
@@ -452,9 +366,9 @@
             });
             
             const actions = {
-                1: () => window.location.href = 'https://games-gameannouncement.netlify.app/',
-                2: () => window.location.href = 'https://games-code-stockholder.netlify.app/',
-                3: () => window.location.href = 'https://games-code.netlify.app/'
+                1: () => window.location.href = 'https://pixinyuleguangfang-51nw.vercel.app/',
+                2: () => window.location.href = 'https://picinyulegudong.vercel.app/',
+                3: () => window.location.href = 'https://pixinyule-iuns.vercel.app/'
             };
             
             if (actions[buttonId]) {
@@ -472,121 +386,6 @@
                 window.location.reload();
             }, 1000); // 1秒后刷新
         }
-
-        // 自定义滚动条功能
-        (function() {
-            const scrollbar = document.getElementById('customScrollbar');
-            const scrollThumb = document.getElementById('scrollThumb');
-            const scrollUp = document.getElementById('scrollUp');
-            const scrollDown = document.getElementById('scrollDown');
-            let isDragging = false;
-            let startY = 0;
-            let startScrollTop = 0;
-
-            // 更新滚动条位置
-            function updateScrollThumbPosition() {
-                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollPercentage = (scrollTop / scrollHeight) * 100;
-                const thumbPosition = (scrollPercentage / 100) * (scrollbar.offsetHeight - scrollThumb.offsetHeight - 80); // 80px for arrows
-                scrollThumb.style.top = (40 + thumbPosition) + 'px'; // 40px for top arrow
-            }
-
-            // 滚动到指定位置
-            function scrollToPosition(position) {
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const targetScrollTop = (position / 100) * scrollHeight;
-                window.scrollTo({
-                    top: targetScrollTop,
-                    behavior: 'smooth'
-                });
-            }
-
-            // 滚动按钮点击事件
-            scrollUp.addEventListener('click', () => {
-                const currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
-                const newScrollPos = Math.max(0, currentScrollPos - 400);
-                window.scrollTo({
-                    top: newScrollPos,
-                    behavior: 'smooth'
-                });
-            });
-
-            scrollDown.addEventListener('click', () => {
-                const currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
-                const documentHeight = document.documentElement.scrollHeight;
-                const windowHeight = window.innerHeight;
-                const maxScrollPos = documentHeight - windowHeight;
-                const newScrollPos = Math.min(maxScrollPos, currentScrollPos + 400);
-                window.scrollTo({
-                    top: newScrollPos,
-                    behavior: 'smooth'
-                });
-            });
-
-            // 滚动条拖动事件
-            scrollThumb.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startY = e.clientY;
-                startScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-                scrollThumb.style.cursor = 'grabbing';
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-
-                const deltaY = e.clientY - startY;
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollbarHeight = scrollbar.offsetHeight - scrollThumb.offsetHeight - 80;
-                const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
-                
-                window.scrollTo({
-                    top: startScrollTop + scrollDelta,
-                    behavior: 'auto'
-                });
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-                scrollThumb.style.cursor = 'grab';
-            });
-
-            // 触摸设备支持
-            scrollThumb.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                startY = e.touches[0].clientY;
-                startScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-                e.preventDefault();
-            });
-
-            document.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-
-                const deltaY = e.touches[0].clientY - startY;
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollbarHeight = scrollbar.offsetHeight - scrollThumb.offsetHeight - 80;
-                const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
-                
-                window.scrollTo({
-                    top: startScrollTop + scrollDelta,
-                    behavior: 'auto'
-                });
-            });
-
-            document.addEventListener('touchend', () => {
-                isDragging = false;
-            });
-
-            // 监听页面滚动
-            window.addEventListener('scroll', updateScrollThumbPosition);
-
-            // 初始化滚动条位置
-            updateScrollThumbPosition();
-
-            // 窗口大小改变时更新
-            window.addEventListener('resize', updateScrollThumbPosition);
-        })();
     </script>
-
-</body></html>
+</body>
+</html>
