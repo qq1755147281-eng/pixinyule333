@@ -102,6 +102,63 @@
             letter-spacing: 1px;
         }
 
+        /* 语言选择器样式 */
+        .language-selector {
+            position: relative;
+            z-index: 10;
+        }
+
+        .language-button {
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.3rem;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 100px;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-option {
+            padding: 0.5rem 1rem;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .language-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-option:first-child {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
         /* 图片和按钮区域 */
         .images-section {
             display: flex;
@@ -226,7 +283,19 @@
     <div class="content-container">
         <!-- 标题部分 -->
         <div class="title-section">
-            <h1 class="main-title">派信娱乐</h1>
+            <div class="flex items-center justify-center gap-4">
+                <h1 class="main-title">派信娱乐</h1>
+                <div class="language-selector relative">
+                    <button id="language-toggle" class="language-button">
+                        <span id="current-language">简体中文</span>
+                        <i data-lucide="chevron-down" class="ml-1 w-4 h-4"></i>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown hidden">
+                        <div class="language-option" data-lang="zh">简体中文</div>
+                        <div class="language-option" data-lang="en">English</div>
+                    </div>
+                </div>
+            </div>
             <p class="subtitle" style="color: rgb(240, 237, 237); font-size: 14px;">引领派生态游戏潮流</p>
         </div>
 
@@ -234,21 +303,21 @@
         <div class="images-section">
             <div class="image-button-group">
                 <div class="square-image">
-                    <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/fa2bd1913da44bf0a67ea6f8fecf5745.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165225597B414255485C4073A2&amp;rrcfp=8a172a1a&amp;x-expires=1770627146&amp;x-signature=%2B7agRGEGHYSNIY1daUFcUtUZHcM%3D" alt="派信娱乐官方宣传">
+                    <img src="https://p26-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c5874978f57f40f59e40a8f8320d12de~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=dzYkuldZ0VtPtrMKcgkfRM7eYP0%3D" alt="官方介绍">
                 </div>
                 <button class="action-button" onclick="handleButtonClick(1)">官方介绍</button>
             </div>
 
             <div class="image-button-group">
                 <div class="square-image">
-                    <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/c16e8f85181442c883e333d11d633738.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165349366A17818B208236B2E3&amp;rrcfp=8a172a1a&amp;x-expires=1770627229&amp;x-signature=QOjXcA98YIYjouIoh374sPRJ0eU%3D" alt="派信娱乐下载">
+                    <img src="https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f6c2cbe63fae466b9132c97e08942d9e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=4CleUm40WNi%2FX3ueqqaFTu1h5yA%3D" alt="股东查询">
                 </div>
                 <button class="action-button" onclick="handleButtonClick(2)">股东查询器</button>
             </div>
 
             <div class="image-button-group">
                 <div class="square-image">
-                    <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/9f37f5db149c4abc909a67946844c16d.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&amp;rcl=20260202165508B4E979944AC4113659F3&amp;rrcfp=8a172a1a&amp;x-expires=1770627309&amp;x-signature=sD8yhMO7iK2BLFjCNr7kAe8cVBQ%3D" alt="派信娱乐预约">
+                    <img src="https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bfdddb88f13942d9e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=z25UpUIe6vtp8YVcZdacfYjIzqU%3D" alt="APP模拟预览">
                 </div>
                 <button class="action-button" onclick="handleButtonClick(3)">app模拟</button>
             </div>
@@ -366,15 +435,53 @@
             });
             
             const actions = {
-                1: () => window.location.href = 'https://pixinyuleguangfang.vercel.app/',
-                2: () => window.location.href = 'https://picinyulegudong.vercel.app/',
-                3: () => window.location.href = 'https://pixinyule-iuns.vercel.app/'
+                1: () => window.location.href = 'https://games-gameannouncement.netlify.app/',
+                2: () => window.location.href = 'https://games-code-stockholder.netlify.app/',
+                3: () => window.location.href = 'https://games-code.netlify.app/'
             };
             
             if (actions[buttonId]) {
                 actions[buttonId]();
             }
         }
+
+        // 语言切换功能
+        const languageToggle = document.getElementById('language-toggle');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const currentLanguage = document.getElementById('current-language');
+        const languageOptions = document.querySelectorAll('.language-option');
+
+        // 切换下拉菜单显示/隐藏
+        languageToggle.addEventListener('click', () => {
+            languageDropdown.classList.toggle('hidden');
+        });
+
+        // 选择语言
+        languageOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const lang = option.getAttribute('data-lang');
+                currentLanguage.textContent = option.textContent;
+                languageDropdown.classList.add('hidden');
+                
+                // 播放点击音效
+                const clickSound = document.getElementById('click-sound');
+                clickSound.currentTime = 0;
+                clickSound.volume = 0.5;
+                clickSound.play().catch(error => {
+                    console.log('无法播放音效:', error);
+                });
+
+                // 这里可以添加实际的语言切换逻辑
+                console.log('切换到语言:', lang);
+            });
+        });
+
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', (event) => {
+            if (!languageToggle.contains(event.target) && !languageDropdown.contains(event.target)) {
+                languageDropdown.classList.add('hidden');
+            }
+        });
 
         // 初始化Lucide图标
         lucide.createIcons();
