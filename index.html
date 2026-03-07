@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>派信娱乐 - 引领游戏潮流</title>
@@ -16,8 +14,8 @@
         body {
             font-family: 'Kaiti', 'STKaiti', 'KaiTi', '楷体', sans-serif;
             background-color: #000;
-            overflow: hidden;
-            height: 100vh;
+            overflow-x: hidden;
+            min-height: 100vh;
             width: 100vw;
         }
 
@@ -37,7 +35,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 200%;
             z-index: 1;
             pointer-events: none;
         }
@@ -72,13 +70,13 @@
         .content-container {
             position: relative;
             z-index: 2;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 1vh 0 5vh;
-            gap: 1.5vh;
+            padding: 5vh 0 10vh;
+            gap: 3vh;
         }
 
         /* 标题样式 */
@@ -164,23 +162,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.2rem;
+            gap: 2rem;
             width: 100%;
-            max-width: 450px;
-            flex: 1;
-            justify-content: flex-start;
+            max-width: 500px;
+            padding-bottom: 2rem;
         }
 
         .image-button-group {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.6rem;
+            gap: 1rem;
             width: 100%;
         }
 
         .square-image {
-            width: 50%;
+            width: 60%;
             aspect-ratio: 1;
             background-color: #111;
             border-radius: 12px;
@@ -205,8 +202,8 @@
         /* 响应式设计 - 移动端优化 */
         @media (max-width: 768px) {
             .content-container {
-                padding: 1vh 0 3vh;
-                gap: 1.5vh;
+                padding: 3vh 0 8vh;
+                gap: 2vh;
             }
             
             .main-title {
@@ -219,16 +216,16 @@
             }
             
             .images-section {
-                gap: 1rem;
+                gap: 1.5rem;
                 max-width: 350px;
             }
             
             .image-button-group {
-                gap: 0.6rem;
+                gap: 0.8rem;
             }
             
             .square-image {
-                width: 45%;
+                width: 55%;
             }
             
             .action-button {
@@ -236,20 +233,27 @@
                 font-size: 0.75rem;
                 max-width: 140px;
             }
+            
+            .official-intro-text,
+            .shareholder-query-text,
+            .game-preview-text {
+                width: 55%;
+                font-size: 1.5rem;
+            }
         }
         
         /* 按钮样式 */
         .action-button {
-            padding: 0.5rem 1.2rem;
+            padding: 0.7rem 1.5rem;
             background-color: rgba(255, 255, 255, 0.05);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 25px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-            max-width: 160px;
+            max-width: 180px;
             backdrop-filter: blur(10px);
         }
 
@@ -261,12 +265,134 @@
         .action-button:active {
             transform: translateY(0);
         }
+
+        /* 官方介绍文字样式 */
+        .official-intro-text {
+            width: 60%;
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.3));
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.8), 0 0 20px rgba(34, 197, 94, 0.6);
+            box-shadow: 
+                0 0 15px rgba(34, 197, 94, 0.5),
+                inset 0 0 15px rgba(34, 197, 94, 0.2);
+            margin: 0 auto;
+        }
+
+        .official-intro-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(34, 197, 94, 0.6),
+                inset 0 0 20px rgba(34, 197, 94, 0.3);
+            text-shadow: 0 0 15px rgba(34, 197, 94, 1), 0 0 30px rgba(34, 197, 94, 0.8);
+        }
+
+        .official-intro-text:active {
+            transform: translateY(0);
+        }
+
+        /* 股东查询文字样式 */
+        .shareholder-query-text {
+            width: 60%;
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.3));
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.6);
+            box-shadow: 
+                0 0 15px rgba(239, 68, 68, 0.5),
+                inset 0 0 15px rgba(239, 68, 68, 0.2);
+            margin: 0 auto;
+        }
+
+        .shareholder-query-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(239, 68, 68, 0.6),
+                inset 0 0 20px rgba(239, 68, 68, 0.3);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 1), 0 0 30px rgba(239, 68, 68, 0.8);
+        }
+
+        .shareholder-query-text:active {
+            transform: translateY(0);
+        }
+
+        /* 游戏预览文字样式 */
+        .game-preview-text {
+            width: 60%;
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(66, 153, 225, 0.2), rgba(29, 78, 216, 0.3));
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6);
+            box-shadow: 
+                0 0 15px rgba(59, 130, 246, 0.5),
+                inset 0 0 15px rgba(59, 130, 246, 0.2);
+            margin: 0 auto;
+        }
+
+        .game-preview-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(59, 130, 246, 0.6),
+                inset 0 0 20px rgba(59, 130, 246, 0.3);
+            text-shadow: 0 0 15px rgba(59, 130, 246, 1), 0 0 30px rgba(59, 130, 246, 0.8);
+        }
+
+        .game-preview-text:active {
+            transform: translateY(0);
+        }
+
+        /* 语言选择器容器 */
+        .language-selector-container {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <!-- 音效元素 -->
     <audio id="click-sound" preload="auto" volume="0.5">
         <source src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="intro-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="query-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2016/2016-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="game-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2015/2015-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="language-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2014/2014-preview.mp3" type="audio/mpeg">
     </audio>
 
     <!-- 流星背景 -->
@@ -283,17 +409,15 @@
     <div class="content-container">
         <!-- 标题部分 -->
         <div class="title-section">
-            <div class="flex items-center justify-center gap-4">
-                <h1 class="main-title">派信娱乐</h1>
-                <div class="language-selector relative">
-                    <button id="language-toggle" class="language-button">
-                        <span id="current-language">简体中文</span>
-                        <i data-lucide="chevron-down" class="ml-1 w-4 h-4"></i>
-                    </button>
-                    <div id="language-dropdown" class="language-dropdown hidden">
-                        <div class="language-option" data-lang="zh">简体中文</div>
-                        <div class="language-option" data-lang="en">English</div>
-                    </div>
+            <h1 class="main-title">派信娱乐</h1>
+            <div class="language-selector relative">
+                <button id="language-toggle" class="language-button">
+                    <span id="current-language">简体中文</span>
+                    <i data-lucide="chevron-down" class="ml-1 w-4 h-4"></i>
+                </button>
+                <div id="language-dropdown" class="language-dropdown hidden">
+                    <div class="language-option" data-lang="zh">简体中文</div>
+                    <div class="language-option" data-lang="en">English</div>
                 </div>
             </div>
             <p class="subtitle" style="color: rgb(240, 237, 237); font-size: 14px;">引领派生态游戏潮流</p>
@@ -302,23 +426,17 @@
         <!-- 图片和按钮部分 -->
         <div class="images-section">
             <div class="image-button-group">
-                <div class="square-image">
-                    <img src="https://p26-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c5874978f57f40f59e40a8f8320d12de~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=dzYkuldZ0VtPtrMKcgkfRM7eYP0%3D" alt="官方介绍">
-                </div>
+                <div class="official-intro-text" onclick="handleButtonClick(1)">派生态官方</div>
                 <button class="action-button" onclick="handleButtonClick(1)">官方介绍</button>
             </div>
 
             <div class="image-button-group">
-                <div class="square-image">
-                    <img src="https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f6c2cbe63fae466b9132c97e08942d9e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=4CleUm40WNi%2FX3ueqqaFTu1h5yA%3D" alt="股东查询">
-                </div>
+                <div class="shareholder-query-text" onclick="handleButtonClick(2)">生态股东查询</div>
                 <button class="action-button" onclick="handleButtonClick(2)">股东查询器</button>
             </div>
 
             <div class="image-button-group">
-                <div class="square-image">
-                    <img src="https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bfdddb88f13942d9e~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260307184708989DBDAB08ED83FE1BC8&rrcfp=f06b921b&x-expires=1775472451&x-signature=z25UpUIe6vtp8YVcZdacfYjIzqU%3D" alt="APP模拟预览">
-                </div>
+                <div class="game-preview-text" onclick="handleButtonClick(3)">游戏预览</div>
                 <button class="action-button" onclick="handleButtonClick(3)">app模拟</button>
             </div>
         </div>
@@ -418,21 +536,32 @@
 
         animate();
 
-        // 按钮点击处理
-        function handleButtonClick(buttonId) {
-            // 播放点击音效
-            const clickSound = document.getElementById('click-sound');
-            clickSound.currentTime = 0;
-            clickSound.volume = 0.5; // 确保音量适中
-            clickSound.play().then(() => {
-                console.log('音效播放成功');
+        // 播放音效函数
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            sound.currentTime = 0;
+            sound.volume = 0.5;
+            sound.play().then(() => {
+                console.log(`${soundId} 音效播放成功`);
             }).catch(error => {
-                console.log('无法播放音效:', error);
+                console.log(`无法播放 ${soundId} 音效:`, error);
                 // 如果自动播放被阻止，尝试用户交互后播放
                 setTimeout(() => {
-                    clickSound.play().catch(e => console.log('二次尝试播放失败:', e));
+                    sound.play().catch(e => console.log(`二次尝试播放 ${soundId} 失败:`, e));
                 }, 100);
             });
+        }
+
+        // 按钮点击处理
+        function handleButtonClick(buttonId) {
+            // 根据按钮ID播放不同音效
+            const soundMap = {
+                1: 'intro-sound',
+                2: 'query-sound',
+                3: 'game-sound'
+            };
+            
+            playSound(soundMap[buttonId] || 'click-sound');
             
             const actions = {
                 1: () => window.location.href = 'https://games-gameannouncement.netlify.app/',
@@ -463,13 +592,8 @@
                 currentLanguage.textContent = option.textContent;
                 languageDropdown.classList.add('hidden');
                 
-                // 播放点击音效
-                const clickSound = document.getElementById('click-sound');
-                clickSound.currentTime = 0;
-                clickSound.volume = 0.5;
-                clickSound.play().catch(error => {
-                    console.log('无法播放音效:', error);
-                });
+                // 播放语言切换音效
+                playSound('language-sound');
 
                 // 这里可以添加实际的语言切换逻辑
                 console.log('切换到语言:', lang);
@@ -494,5 +618,5 @@
             }, 1000); // 1秒后刷新
         }
     </script>
-</body>
-</html>
+
+</body></html>
