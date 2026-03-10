@@ -379,17 +379,30 @@
 </head>
 <body>
     <!-- 音效元素 -->
-    <audio id="click-sound" preload="auto" volume="0.5">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" type="audio/mpeg">
+    <audio id="ding-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="dong-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2016/2016-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="game-sound" preload="auto" volume="0.5">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2015/2015-preview.mp3" type="audio/mpeg"> 
     </audio>
     <audio id="intro-sound" preload="auto" volume="0.5">
         <source src="https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3" type="audio/mpeg">
     </audio>
     <audio id="query-sound" preload="auto" volume="0.5">
         <source src="https://assets.mixkit.co/active_storage/sfx/2016/2016-preview.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="game-sound" preload="auto" volume="0.5">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2015/2015-preview.mp3" type="audio/mpeg">
+    </think>
+</parameter>
+</object>
+</item>
+</list>
+</parameter>
+<index>
+0
+</index>
+</function>
     </audio>
     <audio id="language-sound" preload="auto" volume="0.5">
         <source src="https://assets.mixkit.co/active_storage/sfx/2014/2014-preview.mp3" type="audio/mpeg">
@@ -556,17 +569,17 @@
         function handleButtonClick(buttonId) {
             // 根据按钮ID播放不同音效
             const soundMap = {
-                1: 'intro-sound',
-                2: 'query-sound',
+                1: 'ding-sound',
+                2: 'dong-sound',
                 3: 'game-sound'
             };
             
             playSound(soundMap[buttonId] || 'click-sound');
             
             const actions = {
-                1: () => window.location.href = 'https://games-gameannouncement.netlify.app/',
-                2: () => window.location.href = 'https://games-code-stockholder.netlify.app/',
-                3: () => window.location.href = 'https://games-code.netlify.app/'
+                1: () => window.location.href = 'https://pixinyuleguangfang.pages.dev/',
+                2: () => window.location.href = 'https://picinyulegudong.pages.dev/',
+                3: () => window.location.href = 'https://pixinyule.pages.dev/'
             };
             
             if (actions[buttonId]) {
