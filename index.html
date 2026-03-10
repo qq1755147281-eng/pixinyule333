@@ -593,6 +593,62 @@
         const currentLanguage = document.getElementById('current-language');
         const languageOptions = document.querySelectorAll('.language-option');
 
+        // 定义中英文翻译映射
+        const translations = {
+            zh: {
+                'main-title': '派信娱乐',
+                'subtitle': '引领派生态游戏潮流',
+                'official-intro-text': '派生态官方',
+                'official-button': '官方介绍',
+                'shareholder-text': '生态股东查询',
+                'shareholder-button': '股东查询器',
+                'game-text': '游戏预览',
+                'game-button': 'app模拟',
+                'language-zh': '简体中文',
+                'language-en': 'English'
+            },
+            en: {
+                'main-title': 'PAIXIN ENTERTAINMENT',
+                'subtitle': 'Leading Pi Ecosystem Gaming',
+                'official-intro-text': 'Pi Ecosystem Official',
+                'official-button': 'Official Intro',
+                'shareholder-text': 'Ecosystem Shareholder Query',
+                'shareholder-button': 'Shareholder Query',
+                'game-text': 'Game Preview',
+                'game-button': 'App Simulation',
+                'language-zh': '简体中文',
+                'language-en': 'English'
+            }
+        };
+
+        // 切换语言函数
+        function switchLanguage(lang) {
+            // 更新主标题
+            document.querySelector('.main-title').textContent = translations[lang]['main-title'];
+            
+            // 更新副标题
+            document.querySelector('.subtitle').textContent = translations[lang]['subtitle'];
+            
+            // 更新官方介绍文字和按钮
+            document.querySelector('.official-intro-text').textContent = translations[lang]['official-intro-text'];
+            document.querySelectorAll('.image-button-group')[0].querySelector('.action-button').textContent = translations[lang]['official-button'];
+            
+            // 更新股东查询文字和按钮
+            document.querySelector('.shareholder-query-text').textContent = translations[lang]['shareholder-text'];
+            document.querySelectorAll('.image-button-group')[1].querySelector('.action-button').textContent = translations[lang]['shareholder-button'];
+            
+            // 更新游戏预览文字和按钮
+            document.querySelector('.game-preview-text').textContent = translations[lang]['game-text'];
+            document.querySelectorAll('.image-button-group')[2].querySelector('.action-button').textContent = translations[lang]['game-button'];
+            
+            // 更新语言选择器
+            document.querySelector('[data-lang="zh"]').textContent = translations[lang]['language-zh'];
+            document.querySelector('[data-lang="en"]').textContent = translations[lang]['language-en'];
+            
+            // 保存当前语言设置到本地存储
+            localStorage.setItem('currentLanguage', lang);
+        }
+
         // 切换下拉菜单显示/隐藏
         languageToggle.addEventListener('click', () => {
             languageDropdown.classList.toggle('hidden');
@@ -608,8 +664,8 @@
                 // 播放语言切换音效
                 playSound('language-sound');
 
-                // 这里可以添加实际的语言切换逻辑
-                console.log('切换到语言:', lang);
+                // 切换语言
+                switchLanguage(lang);
             });
         });
 
@@ -629,6 +685,11 @@
                 localStorage.setItem('pageRefreshed', 'true');
                 window.location.reload();
             }, 1000); // 1秒后刷新
+        } else {
+            // 从本地存储加载保存的语言设置
+            const savedLanguage = localStorage.getItem('currentLanguage') || 'zh';
+            switchLanguage(savedLanguage);
+            currentLanguage.textContent = savedLanguage === 'zh' ? '简体中文' : 'English';
         }
     </script>
 
