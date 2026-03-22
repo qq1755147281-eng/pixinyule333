@@ -368,6 +368,75 @@
             transform: translateY(0);
         }
 
+        /* 生态白皮书文字样式 */
+        .whitepaper-text {
+            width: 60%;
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            margin: 0 auto;
+        }
+
+        .whitepaper-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(255, 255, 255, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+
+        .whitepaper-text:active {
+            transform: translateY(0);
+        }
+
+        /* 股东报名文字样式 */
+        .shareholder-signup-text {
+            width: 60%;
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(126, 34, 206, 0.3));
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.8), 0 0 20px rgba(168, 85, 247, 0.6);
+            box-shadow: 
+                0 0 15px rgba(168, 85, 247, 0.5),
+                inset 0 0 15px rgba(168, 85, 247, 0.2);
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .shareholder-signup-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(168, 85, 247, 0.6),
+                inset 0 0 20px rgba(168, 85, 247, 0.3);
+            text-shadow: 0 0 15px rgba(168, 85, 247, 1), 0 0 30px rgba(168, 85, 247, 0.8);
+        }
+
+        .shareholder-signup-text:active {
+            transform: translateY(0);
+        }
+
         /* 语言选择器容器 */
         .language-selector-container {
             margin-top: 2rem;
@@ -439,18 +508,17 @@
         <!-- 图片和按钮部分 -->
         <div class="images-section">
             <div class="image-button-group">
+                <div class="whitepaper-text" onclick="handleButtonClick(4)">生态白皮书</div>
                 <div class="official-intro-text" onclick="handleButtonClick(1)">派生态官方</div>
-                <button class="action-button" onclick="handleButtonClick(1)">官方介绍</button>
             </div>
 
             <div class="image-button-group">
                 <div class="shareholder-query-text" onclick="handleButtonClick(2)">生态股东查询</div>
-                <button class="action-button" onclick="handleButtonClick(2)">股东查询器</button>
             </div>
 
             <div class="image-button-group">
                 <div class="game-preview-text" onclick="handleButtonClick(3)">游戏预览</div>
-                <button class="action-button" onclick="handleButtonClick(3)">app模拟</button>
+                <div class="shareholder-signup-text" onclick="handleButtonClick(5)">点我报名股东</div>
             </div>
         </div>
     </div>
@@ -571,7 +639,9 @@
             const soundMap = {
                 1: 'ding-sound',
                 2: 'dong-sound',
-                3: 'game-sound'
+                3: 'game-sound',
+                4: 'ding-sound',
+                5: 'dong-sound'
             };
             
             playSound(soundMap[buttonId] || 'click-sound');
@@ -579,7 +649,9 @@
             const actions = {
                 1: () => window.location.href = 'https://pixinyuleguangfang.pages.dev/',
                 2: () => window.location.href = 'https://picinyulegudong.pages.dev/',
-                3: () => window.location.href = 'https://pixinyule.pages.dev/'
+                3: () => window.location.href = 'https://pixinyule.pages.dev/',
+                4: () => window.location.href = 'https://pixinbaipishu.pages.dev/',
+                5: () => window.location.href = 'https://pixinbaoming.pages.dev/'
             };
             
             if (actions[buttonId]) {
@@ -604,6 +676,8 @@
                 'shareholder-button': '股东查询器',
                 'game-text': '游戏预览',
                 'game-button': 'app模拟',
+                'whitepaper-text': '生态白皮书',
+                'signup-text': '点我报名股东',
                 'language-zh': '简体中文',
                 'language-en': 'English'
             },
@@ -616,6 +690,8 @@
                 'shareholder-button': 'Shareholder Query',
                 'game-text': 'Game Preview',
                 'game-button': 'App Simulation',
+                'whitepaper-text': 'Ecosystem Whitepaper',
+                'signup-text': 'Sign Up as Shareholder',
                 'language-zh': '简体中文',
                 'language-en': 'English'
             }
@@ -632,6 +708,12 @@
             // 更新官方介绍文字和按钮
             document.querySelector('.official-intro-text').textContent = translations[lang]['official-intro-text'];
             document.querySelectorAll('.image-button-group')[0].querySelector('.action-button').textContent = translations[lang]['official-button'];
+            
+            // 更新生态白皮书文字
+            document.querySelector('.whitepaper-text').textContent = translations[lang]['whitepaper-text'];
+            
+            // 更新股东报名文字
+            document.querySelector('.shareholder-signup-text').textContent = translations[lang]['signup-text'];
             
             // 更新股东查询文字和按钮
             document.querySelector('.shareholder-query-text').textContent = translations[lang]['shareholder-text'];
